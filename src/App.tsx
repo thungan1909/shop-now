@@ -1,4 +1,4 @@
-import Login from "./pages/Login";
+import AppRoutes from "./routers/AppRoutes";
 
 // const queryClient = new QueryClient({
 //     defaultOptions: {
@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 //     }
 // });
 const App = () => {
-  return <Login />;
+  return <AppRoutes />;
 };
 
 export default App;
