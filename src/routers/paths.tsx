@@ -1,7 +1,7 @@
 import PageNotFound from "../pages/common-pages/PageNotFound";
 import type { RouteItemConfig } from "../types/route-config";
 import { ROUTES_CONSTANTS } from "./constants";
-import { LoginPage } from "./lazyLoad";
+import { DashboardPage, LoginPage } from "./lazyLoad";
 
 const simpleRoutes: RouteItemConfig[] = [
   {
@@ -14,7 +14,7 @@ const simpleRoutes: RouteItemConfig[] = [
 const mainRoutes: RouteItemConfig[] = [
   {
     path: ROUTES_CONSTANTS.DASHBOARD,
-    element: <LoginPage />, //TODO
+    element: <DashboardPage />, //TODO
     showWithPermission: true,
   },
 ];

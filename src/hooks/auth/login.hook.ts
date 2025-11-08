@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { LoginDTO, LoginResponse } from "../../types/dtos/auth.dto";
+import type { AuthenticationInfoType } from "../../types/auth";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -53,4 +54,34 @@ export const useLogin = () => {
       }
     },
   });
+};
+
+const _useAuthenticationCache = () => {
+  const queryClient = useQueryClient();
+
+  return useQuery<AuthenticationInfoType>({
+    queryKey: ["authenticationQueryKey"],
+    initialData: (() => {
+      try {
+        const data = localStorage.getItem("authInfo");
+        return data ? JSON.parse(data) : ({} as AuthenticationInfoType);
+      } catch (error) {
+        console.error("Failed to parse authInfo from localStorage", error);
+        return {} as AuthenticationInfoType;
+      }
+    })(),
+    queryFn: () => {
+      return (
+        queryClient.getQueryData<AuthenticationInfoType>([
+          "authenticationQueryKey",
+        ]) ?? ({} as AuthenticationInfoType)
+      );
+    },
+  });
+};
+
+export const useAuthentication = (): AuthenticationInfoType => {
+  const { data } = _useAuthenticationCache();
+
+  return data || ({} as AuthenticationInfoType);
 };

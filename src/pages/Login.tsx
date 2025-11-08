@@ -37,6 +37,7 @@ const Login = () => {
         notify.error(error.message || defaultErrorMsg);
       },
       onSuccess: () => {
+        console.log("navi");
         navigate(ROUTES_CONSTANTS.DASHBOARD, { replace: true });
       },
     });

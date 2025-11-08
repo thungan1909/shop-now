@@ -11,3 +11,10 @@ export const LoginPage = withDynamicImport(() => import("../pages/Login"), {
 //     loading: true,
 //   }
 // );
+
+export const DashboardPage = withDynamicImport(
+  () => import("../pages/dashboard/Dashboard"),
+  {
+    loading: true,
+  }
+);
