@@ -11,10 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import CButton from "../components/atoms/CButton/CButton";
 import { ROUTES_CONSTANTS } from "../routers/constants";
+import { useLogin } from "../hooks/auth/login.hook";
+import { notify } from "../utils/notifyUtils";
+import { defaultErrorMsg } from "../constants/message/errorMsg";
 const resolver = zodResolver(UserLogInSchema);
 
 const Login = () => {
   const navigate = useNavigate();
+  const { mutate: exeLogin } = useLogin();
 
   const {
     control,
@@ -28,7 +32,14 @@ const Login = () => {
     },
   });
   const onSubmitLogin = (data: TUserLogInSchema) => {
-    console.log(data);
+    exeLogin(data, {
+      onError: (error) => {
+        notify.error(error.message || defaultErrorMsg);
+      },
+      onSuccess: () => {
+        navigate(ROUTES_CONSTANTS.DASHBOARD, { replace: true });
+      },
+    });
   };
 
   return (
