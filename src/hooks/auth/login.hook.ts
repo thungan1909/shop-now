@@ -1,6 +1,9 @@
+import { AUTH_INFO } from "./../../constants/index";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { LoginDTO, LoginResponse } from "../../types/dtos/auth.dto";
 import type { AuthenticationInfoType } from "../../types/auth";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
+import { AUTH_QUERY_KEY } from "../../constants/queryKey";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -28,27 +31,30 @@ export const useLogin = () => {
 
     onSuccess: async (data) => {
       try {
-        const { token, id } = data;
+        console.log(data);
+        const { accessToken, refreshToken, id } = data;
 
         if (!id) {
           throw new Error("Missing ID in response");
         }
 
-        localStorage.setItem("accessToken", token);
+        localStorage.setItem(ACCESS_TOKEN, accessToken);
+        localStorage.setItem(REFRESH_TOKEN, refreshToken);
 
         const authInfo = {
           isAuth: true,
           userId: id,
         };
-        localStorage.setItem("authInfo", JSON.stringify(authInfo));
 
-        // Cập nhật cache React Query
-        queryClient.setQueryData(["auth"], authInfo);
-        await queryClient.invalidateQueries({ queryKey: ["auth"] });
+        localStorage.setItem(AUTH_INFO, JSON.stringify(authInfo));
 
-        // (DummyJSON không có endpoint user info riêng,
-        // nên dùng luôn data trả về từ login)
-        queryClient.setQueryData(["userInfo"], data);
+        // Cập nhật cache React Query //todo ???
+        queryClient.setQueryData([AUTH_QUERY_KEY], authInfo);
+        await queryClient.invalidateQueries({ queryKey: [AUTH_QUERY_KEY] });
+
+        // // (DummyJSON không có endpoint user info riêng,
+        // // nên dùng luôn data trả về từ login)
+        // queryClient.setQueryData(["userInfo"], data);
       } catch (error) {
         console.error("Error while handling login success:", error);
       }
@@ -60,10 +66,11 @@ const _useAuthenticationCache = () => {
   const queryClient = useQueryClient();
 
   return useQuery<AuthenticationInfoType>({
-    queryKey: ["authenticationQueryKey"],
+    queryKey: [AUTH_QUERY_KEY],
     initialData: (() => {
       try {
-        const data = localStorage.getItem("authInfo");
+        const data = localStorage.getItem(AUTH_INFO);
+
         return data ? JSON.parse(data) : ({} as AuthenticationInfoType);
       } catch (error) {
         console.error("Failed to parse authInfo from localStorage", error);
@@ -72,9 +79,8 @@ const _useAuthenticationCache = () => {
     })(),
     queryFn: () => {
       return (
-        queryClient.getQueryData<AuthenticationInfoType>([
-          "authenticationQueryKey",
-        ]) ?? ({} as AuthenticationInfoType)
+        queryClient.getQueryData<AuthenticationInfoType>([AUTH_QUERY_KEY]) ??
+        ({} as AuthenticationInfoType)
       );
     },
   });
@@ -82,6 +88,5 @@ const _useAuthenticationCache = () => {
 
 export const useAuthentication = (): AuthenticationInfoType => {
   const { data } = _useAuthenticationCache();
-
   return data || ({} as AuthenticationInfoType);
 };

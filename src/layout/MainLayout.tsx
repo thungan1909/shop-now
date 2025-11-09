@@ -1,5 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthentication } from "../hooks/auth/login.hook";
+import Navbar from "../components/molecules/cNavbar/Navbar";
 // import { useAuthentication } from "../hooks/auth/login.hook";
 // import { ProfileAccountPage } from "../routers/lazyLoad";
 
@@ -8,23 +10,23 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  // const { isAuth } = useAuthentication();
+  const { isAuth } = useAuthentication();
   const navigate = useNavigate();
   const location = useLocation();
-
+  console.log(isAuth);
   const [isAddNewPage, setIsAddNewPage] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsAddNewPage(location.pathname.includes("add-new"));
   }, [location]);
-
+  console.log(isAuth);
   // const isProfilePage = React.Children.toArray(children).some(
   //   (child) => React.isValidElement(child) && child.type === ProfileAccountPage
   // );
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* <Navbar isAuth={isAuth} /> */}
+      <Navbar isAuth={isAuth} />
       <div className={"my-24 md:m-24 px-4"}>{children}</div>
       {/* 
       {!isAddNewPage && (

@@ -5,4 +5,5 @@ export type PeristTokens = {
 
 export type AuthenticationInfoType = {
   isAuth: boolean;
+  userId: string;
 };

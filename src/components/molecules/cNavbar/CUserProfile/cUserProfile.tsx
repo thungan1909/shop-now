@@ -1,0 +1,113 @@
+import { Avatar, Divider, Typography } from "@mui/material";
+
+import { useEffect, useRef, useState } from "react";
+
+import { FaCog, FaFolder, FaSignOutAlt, FaUser } from "react-icons/fa";
+
+import { useNavigate } from "react-router-dom";
+import { useGetCurrentUser } from "../../../../hooks/user/user.hook";
+import CButton from "../../../atoms/CButton/CButton";
+
+const CUserProfileAvatar = () => {
+  const { data: currentUser } = useGetCurrentUser();
+  const navigate = useNavigate();
+  const [openMenu, setOpenMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  // const { mutate: exeLogout } = useLogout();
+
+  const handleLogout = () => {
+    // exeLogout({});
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenu(false);
+      }
+    };
+
+    if (openMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openMenu]);
+
+  return (
+    <div className="relative">
+      <Avatar
+        alt="user-avatar"
+        style={{ backgroundColor: "var(--main-500)" }}
+        className="cursor-pointer"
+        src={currentUser?.avatarUrl}
+        onClick={() => setOpenMenu((prev) => !prev)}
+        role="button"
+        tabIndex={0}
+      >
+        <FaUser />
+      </Avatar>
+
+      {openMenu && (
+        <div
+          className="absolute right-0 top-12 w-[240px] rounded-2xl shadow bg-white p-5"
+          ref={menuRef}
+        >
+          <div className="flex gap-2 cursor-pointer mb-2">
+            <Avatar
+              alt="user-avatar"
+              style={{ backgroundColor: "var(--main-500)" }}
+              src={currentUser?.avatarUrl}
+            >
+              <FaUser />
+            </Avatar>
+            <div className="flex flex-col">
+              <Typography>{currentUser?.fullName || "Full name"}</Typography>
+
+              <Typography variant="caption" className="text-gray-500">
+                {currentUser?.username}
+              </Typography>
+            </div>
+          </div>
+          <Divider />
+          <div className="flex flex-col gap-2 mt-2 items-start px-2">
+            <CButton
+              variant="text"
+              textTransform="capitalize"
+              className="gap-2"
+              onClick={() => {
+                // navigate(ROUTES_CONSTANTS.MANAGE_MY_UPLOAD.BASE);
+              }}
+            >
+              <FaFolder />
+              Manage my uploads
+            </CButton>
+            <CButton
+              variant="text"
+              textTransform="capitalize"
+              className="gap-2"
+              onClick={() => {
+                // navigate(ROUTES_CONSTANTS.USER.PROFILE_ACCOUNT);
+              }}
+            >
+              <FaCog />
+              My account
+            </CButton>
+            <CButton
+              variant="text"
+              textTransform="capitalize"
+              className="gap-2"
+              onClick={handleLogout}
+            >
+              <FaSignOutAlt />
+              Logout
+            </CButton>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CUserProfileAvatar;

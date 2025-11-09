@@ -2,6 +2,7 @@ import React, { Suspense, useMemo } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { generateRoute } from "./generateRoute";
 import { authenRoutes, mainRoutes, simpleRoutes } from "./paths";
+import MainLayout from "../layout/MainLayout";
 
 const AppRoutes = () => {
   const authenMenu = useMemo(() => {
@@ -21,7 +22,7 @@ const AppRoutes = () => {
             <Route
               key={route.path}
               path={route.path}
-              element={<>{route.element}</>}
+              element={<MainLayout>{route.element}</MainLayout>}
             />
           ))}
           {simpleMenu}
