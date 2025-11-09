@@ -12,8 +12,8 @@ export const LoginPage = withDynamicImport(() => import("../pages/Login"), {
 //   }
 // );
 
-export const DashboardPage = withDynamicImport(
-  () => import("../pages/dashboard/Dashboard"),
+export const HomePage = withDynamicImport(
+  () => import("../pages/homepage/HomePage"),
   {
     loading: true,
   }

@@ -6,5 +6,5 @@ export const ROUTES_CONSTANTS = {
     PAGE_NOT_FOUND: "/404",
     VERIFY_ACCOUNT: "/verify-account",
   },
-  DASHBOARD: "/",
+  HOMEPAGE: "/",
 };

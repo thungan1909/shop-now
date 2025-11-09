@@ -38,7 +38,7 @@ const Login = () => {
       },
       onSuccess: () => {
         console.log("navi");
-        navigate(ROUTES_CONSTANTS.DASHBOARD, { replace: true });
+        navigate(ROUTES_CONSTANTS.HOMEPAGE, { replace: true });
       },
     });
   };

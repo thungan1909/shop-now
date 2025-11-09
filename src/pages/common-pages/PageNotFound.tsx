@@ -14,7 +14,7 @@ const PageNotFound = () => {
       </Typography>
       <CButton
         size="large"
-        onClick={() => navigate(ROUTES_CONSTANTS.DASHBOARD)}
+        onClick={() => navigate(ROUTES_CONSTANTS.HOMEPAGE)}
         isRounded
       >
         Go home
