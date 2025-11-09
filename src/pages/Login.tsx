@@ -1,22 +1,25 @@
-import CTextField from "../components/atoms/CTextField/CTextField";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaKey, FaUser } from "react-icons/fa";
-import {
-  UserLogInSchema,
-  type TUserLogInSchema,
-} from "../validation/user.schema";
+import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { Typography } from "@mui/material";
+import CTextField from "../components/atoms/CTextField/CTextField";
 import CButton from "../components/atoms/CButton/CButton";
 import { ROUTES_CONSTANTS } from "../routers/constants";
 import { useLogin } from "../hooks/auth/login.hook";
 import { notify } from "../utils/notifyUtils";
 import { defaultErrorMsg } from "../constants/message/errorMsg";
+
+import {
+  UserLogInSchema,
+  type TUserLogInSchema,
+} from "../validation/user.schema";
+
 const resolver = zodResolver(UserLogInSchema);
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const { mutate: exeLogin } = useLogin();
 
@@ -26,11 +29,10 @@ const Login = () => {
     formState: { isValid },
   } = useForm<TUserLogInSchema>({
     resolver,
-    defaultValues: {
-      username: "",
-      password: "",
-    },
+    defaultValues: { username: "", password: "" },
+    mode: "onChange",
   });
+
   const onSubmitLogin = (data: TUserLogInSchema) => {
     exeLogin(data, {
       onError: (error) => {
@@ -43,110 +45,106 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6">
-      <Typography variant="h5">Login</Typography>
-      <Typography className="text-center">
-        Welcome to
-        <span className="ml-1" style={{ color: "var(--main-600)" }}>
-          Shop Now
-        </span>
-      </Typography>
-      <form
-        className="flex flex-col gap-6 w-full"
-        onSubmit={handleSubmit(onSubmitLogin)}
-      >
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col">
-            <Controller
-              name="username"
-              control={control}
-              defaultValue=""
-              render={({ field, fieldState }) => (
-                <>
-                  <CTextField
-                    {...field}
-                    type="text"
-                    label="Username"
-                    placeholder="Username"
-                    className="w-full"
-                    startIcon={<FaUser />}
-                  />
-                  {fieldState.error && (
-                    <Typography color="error" variant="caption">
-                      {fieldState.error.message}
-                    </Typography>
-                  )}
-                </>
-              )}
-            />
-          </div>
-          <div className="flex flex-col">
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              render={({ field, fieldState }) => (
-                <>
-                  <CTextField
-                    {...field}
-                    type="password"
-                    label="Password"
-                    placeholder="Password"
-                    className="w-full"
-                    startIcon={<FaKey />}
-                  />
-                  {fieldState.error && (
-                    <Typography color="error" variant="caption">
-                      {fieldState.error.message}
-                    </Typography>
-                  )}
-                </>
-              )}
-            />
-          </div>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 sm:p-8">
+        <div className="text-center mb-6">
+          <Typography variant="h4" className="font-bold mb-2">
+            Welcome Back
+          </Typography>
+          <Typography variant="body1" className="text-gray-500">
+            Login to your Shop Now account
+          </Typography>
+        </div>
 
-          <div className="!text-end">
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmitLogin)}
+        >
+          <Controller
+            name="username"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="text"
+                  label="Username"
+                  placeholder="Enter your username"
+                  startIcon={<FaUser />}
+                  className="w-full"
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="password"
+                  label="Password"
+                  placeholder="Enter your password"
+                  startIcon={<FaKey />}
+                  className="w-full"
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <div className="text-right">
             <CButton
-              onClick={() => {
-                navigate(ROUTES_CONSTANTS.AUTH.RESET_PASSWORD);
-              }}
+              onClick={() => navigate(ROUTES_CONSTANTS.AUTH.RESET_PASSWORD)}
               variant="text"
-              size="large"
+              size="medium"
               textTransform="capitalize"
             >
-              Forgot your password?
+              Forgot password?
             </CButton>
           </div>
-        </div>
-
-        <CButton type="submit" disabled={!isValid} className="w-full" isRounded>
-          Log In
-        </CButton>
-
-        <div className="flex justify-between">
-          <CButton
-            onClick={() => {
-              navigate(ROUTES_CONSTANTS.AUTH.REGISTER);
-            }}
-            variant="text"
-            size="large"
-            textTransform="capitalize"
-          >
-            Create new account
-          </CButton>
 
           <CButton
-            onClick={() => {
-              navigate(ROUTES_CONSTANTS.AUTH.VERIFY_ACCOUNT);
-            }}
-            variant="text"
-            size="large"
-            textTransform="capitalize"
+            type="submit"
+            disabled={!isValid}
+            className="w-full py-3 text-lg font-medium"
+            isRounded
           >
-            Verify your account
+            Log In
           </CButton>
-        </div>
-      </form>
+
+          <div className="flex flex-col sm:flex-row justify-between gap-2 mt-2 text-center sm:text-left">
+            <CButton
+              onClick={() => navigate(ROUTES_CONSTANTS.AUTH.REGISTER)}
+              variant="text"
+              size="medium"
+              textTransform="capitalize"
+            >
+              Create new account
+            </CButton>
+
+            <CButton
+              onClick={() => navigate(ROUTES_CONSTANTS.AUTH.VERIFY_ACCOUNT)}
+              variant="text"
+              size="medium"
+              textTransform="capitalize"
+            >
+              Verify account
+            </CButton>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

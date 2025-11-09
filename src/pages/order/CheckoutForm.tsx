@@ -5,6 +5,8 @@ import { useUpdateUserShipping } from "../../hooks/shipping/useUpdateUserShippin
 import { useClearCart } from "../../hooks/cart/useClearCart.hook";
 import type { ShippingInfoDTO } from "../../types/dtos/shipping.dto";
 import PaymentSection from "./Payment";
+import CButton from "../../components/atoms/CButton/CButton";
+import { FaMoneyBill } from "react-icons/fa";
 
 interface CheckoutFormProps {
   onOrderComplete: () => void;
@@ -130,13 +132,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onOrderComplete }) => {
 
       {/* Payment Section */}
       <PaymentSection paymentInfo={paymentInfo} onChange={setPaymentInfo} />
-
-      <button
-        onClick={handleCheckout}
-        className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-      >
-        Place Order
-      </button>
+      <div className="flex content-center justify-center ">
+        <CButton
+          onClick={handleCheckout}
+          variant="contained"
+          type="submit"
+          size="large"
+          startIcon={<FaMoneyBill />}
+        >
+          Place Order
+        </CButton>
+      </div>
     </div>
   );
 };

@@ -18,8 +18,6 @@ export const useAddToCart = (options?: UseAddToCartOptions) => {
     mutationFn: (payload) => addToCartQuery.fn(payload),
 
     onSuccess: (data, variables) => {
-      notify.success("Added to cart successfully");
-
       // Invalidate lại giỏ hàng để cập nhật UI
       if (variables.userId) {
         queryClient.invalidateQueries({ queryKey: ["cart", variables.userId] });

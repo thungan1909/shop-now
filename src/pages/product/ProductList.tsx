@@ -3,6 +3,7 @@ import type { ProductDTO } from "../../types/dtos/product.dto";
 import { useGetProductList } from "../../hooks/product/useGetProductList.hook";
 import { useSearchProducts } from "../../hooks/product/useSearchProducts.hook";
 import ProductItem from "./ProductItem";
+import { FaSearch } from "react-icons/fa";
 
 const ProductList: React.FC = () => {
   const [page, setPage] = useState(0);
@@ -10,21 +11,16 @@ const ProductList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const loader = useRef<HTMLDivElement | null>(null);
 
-  // Normal product list
   const { data, isFetching } = useGetProductList(20, page * 20);
-
-  // Search hook (only triggers if searchTerm !== "")
   const { data: searchData, isFetching: isSearching } =
     useSearchProducts(searchTerm);
 
-  // When fetch success, append new products
   useEffect(() => {
     if (data?.products && !searchTerm) {
       setProducts((prev) => [...prev, ...data.products]);
     }
   }, [data, searchTerm]);
 
-  // Infinite scroll
   const loadMore = useCallback(() => {
     if (!isFetching && !searchTerm) setPage((prev) => prev + 1);
   }, [isFetching, searchTerm]);
@@ -42,12 +38,11 @@ const ProductList: React.FC = () => {
     return () => observer.disconnect();
   }, [loadMore]);
 
-  // Handle search
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
     if (!value) {
-      setProducts([]); // reset list when clearing search
+      setProducts([]);
       setPage(0);
     }
   };
@@ -55,31 +50,43 @@ const ProductList: React.FC = () => {
   const displayedProducts = searchTerm ? searchData?.products || [] : products;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Product List</h1>
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center">Our Products</h1>
 
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="border border-gray-300 rounded p-2 mb-4 w-full"
-      />
+      {/* Search Bar */}
+      <div className="relative mb-6 max-w-md mx-auto">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full border border-gray-300 rounded-full py-3 pl-12 pr-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        />
+        <FaSearch className="absolute left-4 top-3.5 text-gray-400" />
+      </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {displayedProducts.map((product) => (
           <ProductItem key={product.id} product={product} />
         ))}
       </div>
 
+      {/* Loader / Infinite scroll */}
       {!searchTerm && (
-        <div ref={loader} className="text-center p-4 text-gray-400">
-          {isFetching ? "Loading more..." : "Scroll down to load more"}
+        <div ref={loader} className="text-center p-6 text-gray-500">
+          {isFetching ? "Loading more products..." : "Scroll down to load more"}
         </div>
       )}
 
+      {/* Searching indicator */}
       {searchTerm && isSearching && (
-        <div className="text-center p-4 text-gray-400">Searching...</div>
+        <div className="text-center p-6 text-gray-500">Searching...</div>
+      )}
+
+      {/* No results */}
+      {searchTerm && !isSearching && displayedProducts.length === 0 && (
+        <div className="text-center p-6 text-gray-400">No products found</div>
       )}
     </div>
   );
