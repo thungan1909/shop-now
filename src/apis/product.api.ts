@@ -10,3 +10,13 @@ export const getProductListQuery = {
     return res.data;
   },
 };
+
+export const searchProductQuery = {
+  name: "searchProduct",
+  fn: async (query: string): Promise<ProductListResponseDTO> => {
+    const res = await axios.get(
+      `https://dummyjson.com/products/search?q=${query}`
+    );
+    return res.data;
+  },
+};

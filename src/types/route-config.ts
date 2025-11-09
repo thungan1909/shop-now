@@ -11,7 +11,7 @@ interface RouteItemBase {
     displayText: string;
     icon?: React.ReactNode;
   };
-  showWithPermission: RoutePermissionConfig;
+  // showWithPermission: RoutePermissionConfig;
   groupName?: string;
   child?: RouteItemBase[];
   disabled?: boolean;

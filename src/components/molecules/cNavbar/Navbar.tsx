@@ -18,7 +18,7 @@ import { menuItems, primaryMenuItems } from "./constants";
 // import { CSearchbox } from "../../atoms/CSearchbox/CSearchbox";
 import { useGetCurrentUser } from "../../../hooks/user/user.hook";
 import { getLinkClassName } from "../../../utils/activeLinkUtils";
-import CUserProfileAvatar from "./CUserProfile/cUserProfile";
+import CUserProfileAvatar from "../CUserProfile/cUserProfile";
 
 interface NavbarProps {
   isAuth: Boolean;

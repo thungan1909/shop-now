@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { FaCog, FaFolder, FaSignOutAlt, FaUser } from "react-icons/fa";
 
 import { useNavigate } from "react-router-dom";
-import { useGetCurrentUser } from "../../../../hooks/user/user.hook";
-import CButton from "../../../atoms/CButton/CButton";
+import { useGetCurrentUser } from "../../../hooks/user/user.hook";
+import CButton from "../../atoms/CButton/CButton";
 
 const CUserProfileAvatar = () => {
   const { data: currentUser } = useGetCurrentUser();

@@ -7,4 +7,5 @@ export const ROUTES_CONSTANTS = {
     VERIFY_ACCOUNT: "/verify-account",
   },
   HOMEPAGE: "/",
+  CART: "/cart",
 };

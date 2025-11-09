@@ -18,3 +18,10 @@ export const HomePage = withDynamicImport(
     loading: true,
   }
 );
+
+export const CartPage = withDynamicImport(
+  () => import("../pages/cart/CartPage"),
+  {
+    loading: true,
+  }
+);
