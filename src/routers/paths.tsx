@@ -1,4 +1,5 @@
 import PageNotFound from "../pages/common-pages/PageNotFound";
+import OrderPage from "../pages/order/OrderPage";
 import type { RouteItemConfig } from "../types/route-config";
 import { ROUTES_CONSTANTS } from "./constants";
 import { CartPage, HomePage, LoginPage } from "./lazyLoad";
@@ -23,6 +24,14 @@ const mainRoutes: RouteItemConfig[] = [
     element: (
       <ProtectedRoute>
         <CartPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: ROUTES_CONSTANTS.ORDER,
+    element: (
+      <ProtectedRoute>
+        <OrderPage />
       </ProtectedRoute>
     ),
   },

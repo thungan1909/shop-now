@@ -4,14 +4,8 @@ import type {
   AddToCartRequest,
   AddToCartResponse,
 } from "../types/dtos/cart.dto";
-import { ACCESS_TOKEN } from "../constants";
 import { API_BASE_URL } from "../types";
-
-const getAuthHeader = () => {
-  const token = localStorage.getItem(ACCESS_TOKEN);
-  if (!token) throw new Error("No access token");
-  return { Authorization: `Bearer ${token}` };
-};
+import { getAuthHeader } from "../utils/getAuthHeader";
 
 // --- add to cart ---
 export const addToCartQuery = {
@@ -141,5 +135,14 @@ export const removeProductQuery = {
       products: updatedProducts,
       response: res.data,
     };
+  },
+};
+
+// --- Clear cart ---
+export const clearCartQuery = {
+  name: "clearCart",
+  fn: async (userId: number) => {
+    localStorage.removeItem(`cart-${userId}`);
+    return { success: true };
   },
 };

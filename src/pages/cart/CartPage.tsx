@@ -4,8 +4,11 @@ import { useCartQuery } from "../../hooks/cart/useCartQuery.hook";
 import { useUpdateCartQuantity } from "../../hooks/cart/useUpdateCartQuantity.hook";
 import { useRemoveCartProduct } from "../../hooks/cart/useRemoveCartProduct.hook";
 import { useAuthentication } from "../../hooks/auth/login.hook";
+import { useNavigate } from "react-router-dom";
+import { ROUTES_CONSTANTS } from "../../routers/constants";
 
 const CartPage: React.FC = () => {
+  const navigate = useNavigate();
   const { isAuth, userId } = useAuthentication();
   const { cartQuery } = useCartQuery(userId);
   const { mutate: updateQuantity } = useUpdateCartQuantity(userId);
@@ -33,6 +36,9 @@ const CartPage: React.FC = () => {
     );
   }
 
+  const handleCheckout = () => {
+    navigate(ROUTES_CONSTANTS.ORDER);
+  };
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">My Cart</h1>
@@ -91,6 +97,7 @@ const CartPage: React.FC = () => {
           Total: ${totalAmount.toFixed(2)}
         </p>
       </div>
+      <CButton onClick={handleCheckout}>Buy now</CButton>
     </div>
   );
 };

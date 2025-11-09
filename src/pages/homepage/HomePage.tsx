@@ -1,4 +1,4 @@
-import ProductList from "../productList/ProductList";
+import ProductList from "../product/ProductList";
 
 const HomePage = () => {
   // const { isAuth } = useAuthentication();
