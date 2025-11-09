@@ -2,21 +2,20 @@ import { Avatar, Divider, Typography } from "@mui/material";
 
 import { useEffect, useRef, useState } from "react";
 
-import { FaCog, FaFolder, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaCog, FaSignOutAlt, FaUser } from "react-icons/fa";
 
-import { useNavigate } from "react-router-dom";
-import { useGetCurrentUser } from "../../../hooks/user/user.hook";
+import { useGetCurrentUser } from "../../../hooks/user/useGetCurrentUser.hook";
 import CButton from "../../atoms/CButton/CButton";
+import { useLogout } from "../../../hooks/auth/useLogout.hook";
 
 const CUserProfileAvatar = () => {
   const { data: currentUser } = useGetCurrentUser();
-  const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
-  // const { mutate: exeLogout } = useLogout();
+  const { mutate: exeLogout } = useLogout();
 
   const handleLogout = () => {
-    // exeLogout({});
+    exeLogout();
   };
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const CUserProfileAvatar = () => {
         alt="user-avatar"
         style={{ backgroundColor: "var(--main-500)" }}
         className="cursor-pointer"
-        src={currentUser?.avatarUrl}
+        src={currentUser?.image}
         onClick={() => setOpenMenu((prev) => !prev)}
         role="button"
         tabIndex={0}
@@ -58,13 +57,16 @@ const CUserProfileAvatar = () => {
             <Avatar
               alt="user-avatar"
               style={{ backgroundColor: "var(--main-500)" }}
-              src={currentUser?.avatarUrl}
+              src={currentUser?.image}
             >
               <FaUser />
             </Avatar>
             <div className="flex flex-col">
-              <Typography>{currentUser?.fullName || "Full name"}</Typography>
-
+              <Typography>
+                {`${currentUser?.firstName ?? ""} ${
+                  currentUser?.lastName ?? ""
+                }`.trim() || "Full name"}
+              </Typography>
               <Typography variant="caption" className="text-gray-500">
                 {currentUser?.username}
               </Typography>
@@ -72,17 +74,6 @@ const CUserProfileAvatar = () => {
           </div>
           <Divider />
           <div className="flex flex-col gap-2 mt-2 items-start px-2">
-            <CButton
-              variant="text"
-              textTransform="capitalize"
-              className="gap-2"
-              onClick={() => {
-                // navigate(ROUTES_CONSTANTS.MANAGE_MY_UPLOAD.BASE);
-              }}
-            >
-              <FaFolder />
-              Manage my uploads
-            </CButton>
             <CButton
               variant="text"
               textTransform="capitalize"

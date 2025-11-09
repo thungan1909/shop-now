@@ -2,6 +2,7 @@ import PageNotFound from "../pages/common-pages/PageNotFound";
 import type { RouteItemConfig } from "../types/route-config";
 import { ROUTES_CONSTANTS } from "./constants";
 import { CartPage, HomePage, LoginPage } from "./lazyLoad";
+import ProtectedRoute from "./ProtectedRoute";
 
 const simpleRoutes: RouteItemConfig[] = [
   {
@@ -19,8 +20,11 @@ const mainRoutes: RouteItemConfig[] = [
   },
   {
     path: ROUTES_CONSTANTS.CART,
-    element: <CartPage />,
-    // showWithPermission: true,
+    element: (
+      <ProtectedRoute>
+        <CartPage />
+      </ProtectedRoute>
+    ),
   },
 ];
 

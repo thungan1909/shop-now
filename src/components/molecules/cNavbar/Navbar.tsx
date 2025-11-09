@@ -1,12 +1,4 @@
-import {
-  FaBars,
-  FaBell,
-  FaCaretDown,
-  FaChartBar,
-  FaCoins,
-  FaFire,
-  FaTimes,
-} from "react-icons/fa";
+import { FaBars, FaBell, FaCaretDown, FaTimes } from "react-icons/fa";
 import logo from "../../../assets/logo.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -16,7 +8,7 @@ import CButton from "../../atoms/CButton/CButton";
 import MoreMenu from "./MoreMenu";
 import { menuItems, primaryMenuItems } from "./constants";
 // import { CSearchbox } from "../../atoms/CSearchbox/CSearchbox";
-import { useGetCurrentUser } from "../../../hooks/user/user.hook";
+import { useGetCurrentUser } from "../../../hooks/user/useGetCurrentUser.hook";
 import { getLinkClassName } from "../../../utils/activeLinkUtils";
 import CUserProfileAvatar from "../CUserProfile/cUserProfile";
 
@@ -118,20 +110,20 @@ const Navbar = ({ isAuth }: NavbarProps) => {
           <>
             <div className="hidden md:flex items-center space-x-4">
               {/* Coins & Streak */}
-              <div className="flex items-center space-x-1 bg-yellow-100 text-yellow-600 px-3 py-2 rounded-full hover:bg-yellow-200 transition cursor-pointer">
+              {/* <div className="flex items-center space-x-1 bg-yellow-100 text-yellow-600 px-3 py-2 rounded-full hover:bg-yellow-200 transition cursor-pointer">
                 <FaCoins />
                 <span className="font-semibold">100</span>
-              </div>
-
+              </div> */}
+              {/* 
               <div className="flex items-center space-x-1 bg-red-100 text-red-600 px-3 py-2 rounded-full hover:bg-red-200 cursor-pointer">
                 <FaFire />
                 <span className="font-semibold">
                   {currentUser?.streak || 0}
                 </span>
-              </div>
+              </div> */}
 
               {/* Icons */}
-              <FaChartBar className="text-gray-500 cursor-pointer hover:text-black transition" />
+              {/* <FaChartBar className="text-gray-500 cursor-pointer hover:text-black transition" /> */}
               <FaBell className="text-gray-500 cursor-pointer hover:text-black transition" />
             </div>
             <CUserProfileAvatar />

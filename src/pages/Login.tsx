@@ -48,7 +48,7 @@ const Login = () => {
       <Typography className="text-center">
         Welcome to
         <span className="ml-1" style={{ color: "var(--main-600)" }}>
-          Show Now
+          Shop Now
         </span>
       </Typography>
       <form
