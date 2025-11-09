@@ -1,4 +1,5 @@
 export interface ProductDTO {
+  quantity: number;
   id: number;
   title: string;
   description: string;

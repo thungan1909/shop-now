@@ -2,7 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { ACCESS_TOKEN, AUTH_INFO, REFRESH_TOKEN } from "../constants";
 import { AUTH_QUERY_KEY } from "../constants/queryKey";
 import { useLogout } from "../hooks/auth/useLogout.hook";
-const API_BASE_URL = "https://dummyjson.com";
+import { API_BASE_URL } from "../types";
 
 export const getUserInfoMutation = {
   name: "getCurrentUser",
