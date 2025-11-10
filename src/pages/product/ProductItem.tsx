@@ -6,6 +6,8 @@ import { notify } from "../../utils/notifyUtils";
 import type { ProductDTO } from "../../types/dtos/product.dto";
 import { useCartButton } from "../../layout/CartButtonProvider";
 import { FaShoppingCart } from "react-icons/fa";
+import { useState } from "react";
+import ProductDetailModal from "./ProductDetailModal";
 
 interface ProductProps {
   product: ProductDTO;
@@ -17,6 +19,8 @@ interface ProductProps {
 
 const ProductItem = ({ product }: ProductProps) => {
   const { isAuth, userId } = useAuthentication();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const queryClient = useQueryClient();
   const controls = useAnimation();
   const { cartButtonRef } = useCartButton();
@@ -88,31 +92,40 @@ const ProductItem = ({ product }: ProductProps) => {
   };
 
   return (
-    <div className="relative border rounded-xl p-3 shadow hover:shadow-lg transition bg-white">
-      {/* Add to Cart Icon Button */}
-      <button
-        onClick={addCartOnClick}
-        className="absolute top-3 right-3 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow"
-      >
-        <FaShoppingCart size={18} />
-      </button>
+    <>
+      <div className="relative border rounded-xl p-3 shadow hover:shadow-lg transition bg-white">
+        {/* Add to Cart Icon Button */}
+        <button
+          onClick={addCartOnClick}
+          className="absolute top-3 right-3 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow"
+        >
+          <FaShoppingCart size={18} />
+        </button>
 
-      <motion.img
-        id={`product-img-${product.id}`}
-        src={product.thumbnail}
-        alt={product.title}
-        className="w-full h-40 object-cover rounded-lg mb-3"
-        animate={controls}
-      />
+        <motion.img
+          id={`product-img-${product.id}`}
+          src={product.thumbnail}
+          alt={product.title}
+          className="w-full h-40 object-cover rounded-lg mb-3"
+          animate={controls}
+          onClick={() => setIsModalOpen(true)}
+        />
 
-      <h3 className="font-semibold text-base truncate">{product.title}</h3>
-      <div className="flex items-center justify-between mt-1">
-        <p className="text-gray-600 font-medium">${product.price}</p>
-        <span className="text-yellow-500 text-sm">
-          ★ {product.rating || "4.5"}
-        </span>
+        <h3 className="font-semibold text-base truncate">{product.title}</h3>
+        <div className="flex items-center justify-between mt-1">
+          <p className="text-gray-600 font-medium">${product.price}</p>
+          <span className="text-yellow-500 text-sm">
+            ★ {product.rating || "4.5"}
+          </span>
+        </div>
       </div>
-    </div>
+      <ProductDetailModal
+        product={product}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddToCart={addCartOnClick}
+      />
+    </>
   );
 };
 

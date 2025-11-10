@@ -93,25 +93,27 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ---
 
-## 🧩 Folder Structure
+## 📂 Folder Structure
 
-src/
-├── apis/
-├── assets/
-├── components/
-│ ├── atoms/
-│ ├── molecules/
-├── constants/
-├── hooks/
-├── layout/
-├── pages/
-├── routers/
-├── types/
-│ ├── auth/
-│ ├── dtos/
-├── utils/
-├── validation/
-└── App.tsx
+## 📂 Folder Structure
+
+- **src/**
+  - **apis/**
+  - **assets/**
+  - **components/**
+    - **atoms/**
+    - **molecules/**
+  - **constants/**
+  - **hooks/**
+  - **layout/**
+  - **pages/**
+  - **routers/**
+  - **types/**
+    - **auth/**
+    - **dtos/**
+  - **utils/**
+  - **validation/**
+  - **App.tsx**
 
 ---
 
