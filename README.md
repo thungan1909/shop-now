@@ -7,7 +7,7 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ## 🌐 Links
 
-- **Live Demo:** [https://shop-now-dtngan.vercel.app/login](https://shop-now-dtngan.vercel.app/login)
+- **Live Demo:** [https://shop-now-dtngan.vercel.app](https://shop-now-dtngan.vercel.app)
 - **GitHub Repository:** [https://github.com/thungan1909/shop-now](https://github.com/thungan1909/shop-now)
 
 ---
