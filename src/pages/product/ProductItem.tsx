@@ -4,10 +4,10 @@ import { useAddToCart } from "../../hooks/cart/useAddToCart.hook";
 import { useQueryClient } from "@tanstack/react-query";
 import { notify } from "../../utils/notifyUtils";
 import type { ProductDTO } from "../../types/dtos/product.dto";
-import { useCartButton } from "../../layout/CartButtonProvider";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import ProductDetailModal from "./ProductDetailModal";
+import { useCartButton } from "../../provider/useCartButton";
 
 interface ProductProps {
   product: ProductDTO;

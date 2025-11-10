@@ -5,7 +5,7 @@ import CButton from "../components/atoms/CButton/CButton";
 import { ROUTES_CONSTANTS } from "../routers/constants";
 import { FaShoppingCart } from "react-icons/fa";
 import type { ReactNode } from "react";
-import { useCartButton } from "./CartButtonProvider";
+import { useCartButton } from "../provider/useCartButton";
 interface MainLayoutProps {
   children: ReactNode;
 }
