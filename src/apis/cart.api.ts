@@ -101,9 +101,8 @@ export const removeProductQuery = {
 // --- Clear cart ---
 export const clearCartQuery = {
   name: "clearCart",
-  fn: async (userId: number) => {
+  fn: async ({ userId }: { userId: number }) => {
     localStorage.removeItem(`cart-${userId}`);
-    // Gọi API mock
     await axiosInstance.put(`/carts/${userId}`, { products: [] });
     return { success: true };
   },

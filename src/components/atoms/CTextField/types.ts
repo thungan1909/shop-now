@@ -1,5 +1,5 @@
-import { SxProps, Theme } from "@mui/material";
-import { CSSProperties, JSX } from "react";
+import type { SxProps, Theme } from "@mui/material";
+import type { CSSProperties, JSX } from "react";
 
 export interface ITextField {
   className?: string;
@@ -15,4 +15,5 @@ export interface ITextField {
   inputRef?: React.Ref<HTMLInputElement>;
   sx?: SxProps<Theme>;
   startIcon?: JSX.Element | null;
+  required?: boolean;
 }

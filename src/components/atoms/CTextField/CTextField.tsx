@@ -18,21 +18,16 @@ const CTextField = forwardRef<HTMLInputElement | null, ITextField>(
       onKeyDown,
       startIcon,
       sx = {},
+      required = false, // ✅ new prop
       ...props
     },
     ref
   ) => {
-    // const [inputValue, setInputValue] = useState(value);
     const [showPassword, setShowPassword] = useState(false);
     const isPasswordField = type === "password";
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // let newValue = e.target.value.slice(0, maxLength);
-      // setInputValue(newValue);
-
-      if (onChange) {
-        onChange(e);
-      }
+      if (onChange) onChange(e);
     };
 
     return (
@@ -41,20 +36,15 @@ const CTextField = forwardRef<HTMLInputElement | null, ITextField>(
         ref={ref}
         label={label}
         placeholder={placeholder}
-        type={isPasswordField && !showPassword ? "password" : "text"}
+        type={isPasswordField && !showPassword ? "password" : type}
         className={className}
         disabled={disabled}
         value={value}
         onChange={handleChange}
+        required={required}
         slotProps={{
           input: {
-            inputProps: {
-              maxLength: maxLength,
-
-              style: {
-                ...customStyle,
-              },
-            },
+            inputProps: { maxLength, style: { ...customStyle } },
             startAdornment: (
               <InputAdornment position="start">{startIcon}</InputAdornment>
             ),
@@ -84,32 +74,26 @@ const CTextField = forwardRef<HTMLInputElement | null, ITextField>(
             },
           "& .MuiOutlinedInput-root": {
             transition: "all 0.3s ease",
-            "& fieldset": {
-              borderColor: "gray",
-            },
+            "& fieldset": { borderColor: "gray" },
             "&:hover fieldset, &.Mui-focused fieldset": {
               borderColor: "var(--main-color)",
             },
           },
           "& .MuiInputLabel-root": {
             fontFamily: "inherit",
-            "&.Mui-focused": {
-              color: "var(--main-color)",
-            },
+            "&.Mui-focused": { color: "var(--main-color)" },
           },
           "& input[type='number']": {
-            MozAppearance: "textfield", // Firefox
+            MozAppearance: "textfield",
             "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
-              WebkitAppearance: "none", // Chrome
+              WebkitAppearance: "none",
               margin: 0,
             },
           },
         }}
-        onKeyDown={(e) => {
-          if (onKeyDown) {
-            onKeyDown(e as React.KeyboardEvent<HTMLInputElement>);
-          }
-        }}
+        onKeyDown={(e) =>
+          onKeyDown && onKeyDown(e as React.KeyboardEvent<HTMLInputElement>)
+        }
       />
     );
   }

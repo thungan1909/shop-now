@@ -1,147 +1,176 @@
-import React, { useState } from "react";
-import { useAuthentication } from "../../hooks/auth/login.hook";
-import { notify } from "../../utils/notifyUtils";
-import { useUpdateUserShipping } from "../../hooks/shipping/useUpdateUserShipping";
-import { useClearCart } from "../../hooks/cart/useClearCart.hook";
-import type { ShippingInfoDTO } from "../../types/dtos/shipping.dto";
-import PaymentSection from "./Payment";
+import React from "react";
 import CButton from "../../components/atoms/CButton/CButton";
-import { FaMoneyBill } from "react-icons/fa";
+import { Controller } from "react-hook-form";
+import type { CheckoutFormProps } from "./types";
+import CTextField from "../../components/atoms/CTextField/CTextField";
+import { Typography } from "@mui/material";
 
-interface CheckoutFormProps {
-  onOrderComplete: () => void;
-}
-
-interface PaymentInfo {
-  method: "card" | "paypal";
-  cardNumber: string;
-  expiryDate: string;
-  cvv: string;
-}
-
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ onOrderComplete }) => {
-  const { userId, isAuth } = useAuthentication();
-  const { mutate: updateShipping } = useUpdateUserShipping();
-  const { mutate: clearCart } = useClearCart();
-
-  const [shippingInfo, setShippingInfo] = useState<ShippingInfoDTO>({
-    recipientName: "",
-    phone: "",
-    email: "",
-    postalCode: "",
-    streetAddress: "",
-    detailAddress: "",
-    deliveryNote: "",
-  });
-
-  const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>({
-    method: "card",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-  });
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setShippingInfo((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCheckout = () => {
-    if (!isAuth || !userId) {
-      notify.warning("Please login to complete checkout.");
-      return;
-    }
-
-    if (
-      !shippingInfo.recipientName ||
-      !shippingInfo.phone ||
-      !shippingInfo.streetAddress
-    ) {
-      notify.error("Please fill in required fields.");
-      return;
-    }
-
-    // Optional: validate payment info if method is card
-    if (paymentInfo.method === "card") {
-      if (
-        !paymentInfo.cardNumber ||
-        !paymentInfo.expiryDate ||
-        !paymentInfo.cvv
-      ) {
-        notify.error("Please fill in card details.");
-        return;
-      }
-    }
-
-    // 1. Update shipping info
-    updateShipping(
-      { userId, shipping: shippingInfo },
-      {
-        onSuccess: () => {
-          // 2. Clear cart
-          clearCart(userId, {
-            onSuccess: () => {
-              notify.success("Order completed!");
-              // 3. Show confirmation
-              onOrderComplete();
-            },
-          });
-        },
-      }
-    );
-  };
+const CheckoutForm: React.FC<CheckoutFormProps> = ({
+  onSubmitForm,
+  formInstance,
+}) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = formInstance;
 
   return (
     <div>
       {/* Shipping Form */}
       <div className="border p-4 rounded mb-4">
         <h2 className="font-bold mb-2">Shipping Information</h2>
-        <div className="mb-4">
-          <label className="block font-semibold">Recipient Name*</label>
-          <input
-            type="text"
-            name="recipientName"
-            value={shippingInfo.recipientName}
-            onChange={handleInputChange}
-            className="border p-2 w-full rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold">Phone*</label>
-          <input
-            type="text"
-            name="phone"
-            value={shippingInfo.phone}
-            onChange={handleInputChange}
-            className="border p-2 w-full rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold">Street Address*</label>
-          <input
-            type="text"
-            name="streetAddress"
-            value={shippingInfo.streetAddress}
-            onChange={handleInputChange}
-            className="border p-2 w-full rounded"
-          />
-        </div>
-      </div>
 
-      {/* Payment Section */}
-      <PaymentSection paymentInfo={paymentInfo} onChange={setPaymentInfo} />
-      <div className="flex content-center justify-center ">
-        <CButton
-          onClick={handleCheckout}
-          variant="contained"
-          type="submit"
-          size="large"
-          startIcon={<FaMoneyBill />}
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmitForm)}
         >
-          Place Order
-        </CButton>
+          <Controller
+            name="recipientName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="text"
+                  label="Recipient Name"
+                  placeholder="Enter recipient name"
+                  className="w-full"
+                  required
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="text"
+                  label="Phone"
+                  placeholder="Enter phone number"
+                  className="w-full"
+                  required
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="email"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="email"
+                  label="Email"
+                  placeholder="Enter email"
+                  className="w-full"
+                  required
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="postalCode"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="text"
+                  label="Postal Code"
+                  placeholder="Enter postal code"
+                  className="w-full"
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="streetAddress"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="text"
+                  label="Street Address"
+                  placeholder="Enter street address"
+                  className="w-full"
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="detailAddress"
+            control={control}
+            render={({ field }) => (
+              <CTextField
+                {...field}
+                type="text"
+                label="Detail Address"
+                placeholder="Enter detail address "
+                className="w-full"
+                required
+              />
+            )}
+          />
+
+          <Controller
+            name="deliveryNote"
+            control={control}
+            render={({ field }) => (
+              <CTextField
+                {...field}
+                type="text"
+                label="Delivery Note"
+                placeholder="Enter delivery note"
+                className="w-full"
+              />
+            )}
+          />
+
+          <CButton
+            type="submit"
+            disabled={!isValid}
+            className="w-full py-3 text-lg font-medium"
+            isRounded
+          >
+            Submit
+          </CButton>
+        </form>
       </div>
     </div>
   );

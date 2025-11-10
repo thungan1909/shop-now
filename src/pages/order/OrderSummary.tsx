@@ -1,4 +1,4 @@
-import React from "react";
+import CButton from "../../components/atoms/CButton/CButton";
 
 interface OrderSummaryProps {
   cartProducts: {
@@ -7,9 +7,13 @@ interface OrderSummaryProps {
     price: number;
     quantity?: number;
   }[];
+  onNext?: () => void;
 }
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({ cartProducts }) => {
+const OrderSummary: React.FC<OrderSummaryProps> = ({
+  cartProducts,
+  onNext,
+}) => {
   const totalAmount =
     cartProducts.reduce((sum, p) => sum + p.price * (p.quantity || 1), 0) || 0;
 
@@ -32,10 +36,15 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ cartProducts }) => {
               </li>
             ))}
           </ul>
-          <div className="flex justify-between font-semibold">
+          <div className="flex justify-between font-semibold mb-4">
             <span>Total</span>
             <span>${totalAmount.toFixed(2)}</span>
           </div>
+          {onNext && (
+            <CButton onClick={onNext} className="w-full" isRounded>
+              Proceed to Shipping
+            </CButton>
+          )}
         </>
       )}
     </div>

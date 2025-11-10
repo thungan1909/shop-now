@@ -1,88 +1,149 @@
+// PaymentForm.tsx
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  PaymentSchema,
+  type TPaymentSchema,
+} from "../../validation/payment.schema";
+import CTextField from "../../components/atoms/CTextField/CTextField";
+import CButton from "../../components/atoms/CButton/CButton";
+import { Typography } from "@mui/material";
 
-interface PaymentInfo {
-  method: "card" | "paypal";
-  cardNumber: string;
-  expiryDate: string;
-  cvv: string;
+interface PaymentFormProps {
+  onPaymentSubmit: (data: TPaymentSchema) => void;
+  defaultValues?: TPaymentSchema;
 }
 
-interface PaymentSectionProps {
-  onChange: (payment: PaymentInfo) => void;
-  paymentInfo: PaymentInfo;
-}
-
-const PaymentSection: React.FC<PaymentSectionProps> = ({
-  onChange,
-  paymentInfo,
+const PaymentForm: React.FC<PaymentFormProps> = ({
+  onPaymentSubmit,
+  defaultValues,
 }) => {
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    onChange({ ...paymentInfo, [name]: value });
-  };
+  const {
+    handleSubmit,
+    control,
+    watch,
+    formState: { isValid },
+  } = useForm<TPaymentSchema>({
+    resolver: zodResolver(PaymentSchema),
+    defaultValues: defaultValues || {
+      method: "card",
+      cardNumber: "",
+      expiryDate: "",
+      cvv: "",
+    },
+    mode: "onChange",
+  });
+
+  const method = watch("method");
 
   return (
-    <div className="border p-4 rounded mb-4">
-      <h2 className="font-bold mb-2">Payment Information</h2>
-
-      <div className="mb-4">
-        <label className="block font-semibold">Payment Method</label>
-        <select
-          name="method"
-          value={paymentInfo.method}
-          onChange={handleInputChange}
-          className="border p-2 w-full rounded"
-        >
-          <option value="card">Credit/Debit Card</option>
-          <option value="paypal">PayPal (simulation)</option>
-        </select>
-      </div>
-
-      {paymentInfo.method === "card" && (
-        <>
-          <div className="mb-4">
-            <label className="block font-semibold">Card Number</label>
-            <input
-              type="text"
-              name="cardNumber"
-              value={paymentInfo.cardNumber}
-              onChange={handleInputChange}
-              placeholder="1234-5678-9012-3456"
-              className="border p-2 w-full rounded"
-            />
+    <form
+      className="flex flex-col gap-5 border p-4 rounded"
+      onSubmit={handleSubmit(onPaymentSubmit)}
+    >
+      <Controller
+        name="method"
+        control={control}
+        render={({ field }) => (
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1">Payment Method</label>
+            <select {...field} className="border p-2 w-full rounded">
+              <option value="card">Credit/Debit Card</option>
+              <option value="paypal">PayPal (simulation)</option>
+            </select>
           </div>
+        )}
+      />
 
-          <div className="mb-4 flex gap-2">
-            <div className="flex-1">
-              <label className="block font-semibold">Expiry Date</label>
-              <input
-                type="text"
-                name="expiryDate"
-                value={paymentInfo.expiryDate}
-                onChange={handleInputChange}
-                placeholder="MM/YY"
-                className="border p-2 w-full rounded"
-              />
-            </div>
+      {method === "card" && (
+        <>
+          <Controller
+            name="cardNumber"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="flex flex-col">
+                <CTextField
+                  {...field}
+                  type="text"
+                  label="Card Number"
+                  placeholder="1234-5678-9012-3456"
+                  className="w-full"
+                  required
+                />
+                {fieldState.error && (
+                  <Typography color="error" variant="caption" className="mt-1">
+                    {fieldState.error.message}
+                  </Typography>
+                )}
+              </div>
+            )}
+          />
 
-            <div className="flex-1">
-              <label className="block font-semibold">CVV</label>
-              <input
-                type="text"
-                name="cvv"
-                value={paymentInfo.cvv}
-                onChange={handleInputChange}
-                placeholder="123"
-                className="border p-2 w-full rounded"
-              />
-            </div>
+          <div className="flex gap-2">
+            <Controller
+              name="expiryDate"
+              control={control}
+              render={({ field, fieldState }) => (
+                <div className="flex-1 flex flex-col">
+                  <CTextField
+                    {...field}
+                    type="text"
+                    label="Expiry Date"
+                    placeholder="MM/YY"
+                    required
+                  />
+                  {fieldState.error && (
+                    <Typography
+                      color="error"
+                      variant="caption"
+                      className="mt-1"
+                    >
+                      {fieldState.error.message}
+                    </Typography>
+                  )}
+                </div>
+              )}
+            />
+
+            <Controller
+              name="cvv"
+              control={control}
+              render={({ field, fieldState }) => (
+                <div className="flex-1 flex flex-col">
+                  <CTextField
+                    {...field}
+                    type="text"
+                    label="CVV"
+                    placeholder="123"
+                    required
+                  />
+                  {fieldState.error && (
+                    <Typography
+                      color="error"
+                      variant="caption"
+                      className="mt-1"
+                    >
+                      {fieldState.error.message}
+                    </Typography>
+                  )}
+                </div>
+              )}
+            />
           </div>
         </>
       )}
-    </div>
+
+      <CButton
+        type="submit"
+        disabled={!isValid}
+        className="w-full py-3"
+        isRounded
+      >
+        Pay Now
+      </CButton>
+    </form>
   );
 };
 
-export default PaymentSection;
+export default PaymentForm;

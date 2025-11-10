@@ -2,14 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notify } from "../../utils/notifyUtils";
 import { clearCartQuery } from "../../apis/cart.api";
 
-export const useClearCart = () => {
+export const useClearCart = (userId?: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userId: number) => clearCartQuery.fn(userId),
+    mutationFn: () => clearCartQuery.fn({ userId: userId! }),
     onSuccess: (_, userId) => {
-      notify.success("Cart cleared successfully");
-      // Xóa cache cart để cập nhật UI
       queryClient.invalidateQueries({ queryKey: ["cart", userId] });
     },
     onError: (err: any) => {
