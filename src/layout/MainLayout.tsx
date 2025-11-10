@@ -18,7 +18,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar isAuth={isAuth} />
-      <div className="my-24 md:m-24 px-4">{children}</div>
+      <div>{children}</div>
 
       <div className="fixed bottom-12 right-12 flex flex-col items-end gap-3">
         <CButton
