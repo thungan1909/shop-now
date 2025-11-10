@@ -1,37 +1,44 @@
+import { jwtDecode } from "jwt-decode";
 import { AUTH_INFO } from "./../../constants/index";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { LoginDTO, LoginResponse } from "../../types/dtos/auth.dto";
 import type { AuthenticationInfoType } from "../../types/auth";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
 import { AUTH_QUERY_KEY } from "../../constants/queryKey";
+import { axiosInstance } from "../../apis/axiosInstance";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
 
   return useMutation<LoginResponse, Error, LoginDTO>({
     mutationFn: async (data: LoginDTO) => {
-      const res = await fetch("https://dummyjson.com/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-          expiresInMins: 30,
-        }),
-        // credentials: "include",
+      // const res = await fetch("https://dummyjson.com/auth/login", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     username: data.username,
+      //     password: data.password,
+      //     expiresInMins: 30,
+      //   }),
+      //   // credentials: "include",
+      // });
+
+      const res = await axiosInstance.post("/auth/login", {
+        username: data.username,
+        password: data.password,
+        expiresInMins: 30,
       });
 
-      if (!res.ok) {
+      if (res.status !== 200) {
         throw new Error("Login failed");
       }
+      const result = res.data;
 
-      const result = await res.json();
       return result;
     },
 
     onSuccess: async (data) => {
       try {
-        console.log(data);
         const { accessToken, refreshToken, id } = data;
 
         if (!id) {
@@ -41,20 +48,32 @@ export const useLogin = () => {
         localStorage.setItem(ACCESS_TOKEN, accessToken);
         localStorage.setItem(REFRESH_TOKEN, refreshToken);
 
+        const decoded: any = jwtDecode(accessToken);
+        console.log(decoded);
+
+        //         {
+        //     "id": 1,
+        //     "username": "emilys",
+        //     "email": "emily.johnson@x.dummyjson.com",
+        //     "firstName": "Emily",
+        //     "lastName": "Johnson",
+        //     "gender": "female",
+        //     "image": "https://dummyjson.com/icon/emilys/128",
+        //     "iat": 1762743745,
+        //     "exp": 1762745545
+        // }
+
         const authInfo = {
           isAuth: true,
-          userId: id,
+          userId: decoded?.id || id,
+          username: decoded?.username,
+          exp: decoded?.exp,
         };
 
         localStorage.setItem(AUTH_INFO, JSON.stringify(authInfo));
 
-        // Cập nhật cache React Query //todo ???
         queryClient.setQueryData([AUTH_QUERY_KEY], authInfo);
         await queryClient.invalidateQueries({ queryKey: [AUTH_QUERY_KEY] });
-
-        // // (DummyJSON không có endpoint user info riêng,
-        // // nên dùng luôn data trả về từ login)
-        // queryClient.setQueryData(["userInfo"], data);
       } catch (error) {
         console.error("Error while handling login success:", error);
       }

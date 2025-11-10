@@ -1,13 +1,11 @@
-import axios from "axios";
 import type { ProductDTO } from "../types/dtos/product.dto";
 import type {
   AddToCartRequest,
   AddToCartResponse,
 } from "../types/dtos/cart.dto";
-import { API_BASE_URL } from "../types";
-import { getAuthHeader } from "../utils/getAuthHeader";
+import { axiosInstance } from "./axiosInstance";
 
-// --- add to cart ---
+// --- Add to cart ---
 export const addToCartQuery = {
   name: "addToCart",
   fn: async ({
@@ -15,27 +13,20 @@ export const addToCartQuery = {
     productId,
     quantity,
   }: AddToCartRequest): Promise<AddToCartResponse> => {
-    // Gọi API mock cho có response
-    const res = await axios.post(
-      `${API_BASE_URL}/carts/add`,
-      { userId, products: [{ id: productId, quantity }] },
-      { headers: getAuthHeader() }
-    );
+    // Gọi API mock
+    const res = await axiosInstance.post("/carts/add", {
+      userId,
+      products: [{ id: productId, quantity }],
+    });
 
-    // ---- Giả lập lưu vào localStorage (vì dummyjson không lưu thật) ----
+    // Cập nhật localStorage
     const storageKey = `cart-${userId}`;
     const currentCart = JSON.parse(localStorage.getItem(storageKey) || "[]");
 
-    // Kiểm tra xem product đã có trong giỏ chưa
-    const existingProductIndex = currentCart.findIndex(
-      (p: any) => p.id === productId
-    );
-
-    if (existingProductIndex >= 0) {
-      // Nếu đã có => tăng số lượng
-      currentCart[existingProductIndex].quantity += quantity;
+    const existingIndex = currentCart.findIndex((p: any) => p.id === productId);
+    if (existingIndex >= 0) {
+      currentCart[existingIndex].quantity += quantity;
     } else {
-      // Nếu chưa có => thêm mới
       currentCart.push({
         id: productId,
         quantity,
@@ -45,25 +36,23 @@ export const addToCartQuery = {
       });
     }
 
-    // Cập nhật localStorage
     localStorage.setItem(storageKey, JSON.stringify(currentCart));
-
     return res.data;
   },
 };
 
+// --- Get cart ---
 export const getCartQuery = {
   name: "getCart",
   fn: async (userId: number): Promise<ProductDTO[]> => {
-    //   const res = await axios.get(`https://dummyjson.com/carts/user/${userId}`, {
-    //     headers: getAuthHeader(),
-    //   });
-    // console.log(res);
-    const storedCart = localStorage.getItem(`cart-${userId}`);
+    // const res = await axiosInstance.get(`/carts/user/${userId}`);
+    const storageKey = `cart-${userId}`;
+    const storedCart = localStorage.getItem(storageKey);
     return storedCart ? JSON.parse(storedCart) : [];
   },
 };
 
+// --- Update quantity ---
 export const updateQuantityQuery = {
   name: "updateQuantity",
   fn: async ({
@@ -75,21 +64,6 @@ export const updateQuantityQuery = {
     productId: number;
     quantity: number;
   }) => {
-    const res = await axios.put(
-      `https://dummyjson.com/carts/${userId}`,
-      {
-        merge: true, // giữ nguyên các product khác
-        products: [
-          {
-            id: productId,
-            quantity,
-          },
-        ],
-      },
-      { headers: { "Content-Type": "application/json" } }
-    );
-
-    // --- Cập nhật localStorage ---
     const storageKey = `cart-${userId}`;
     const currentCart = JSON.parse(localStorage.getItem(storageKey) || "[]");
 
@@ -97,44 +71,30 @@ export const updateQuantityQuery = {
       p.id === productId ? { ...p, quantity } : p
     );
 
+    // Gọi API mock
+    await axiosInstance.put(`/carts/${userId}`, { products: updatedCart });
+
     localStorage.setItem(storageKey, JSON.stringify(updatedCart));
     return { success: true, products: updatedCart };
   },
 };
 
+// --- Remove product ---
 export const removeProductQuery = {
   name: "removeProduct",
   fn: async ({ userId, productId }: { userId: number; productId: number }) => {
     const storageKey = `cart-${userId}`;
-
-    // --- Lấy cart hiện tại từ localStorage ---
     const currentCart = JSON.parse(localStorage.getItem(storageKey) || "[]");
 
-    // --- Xóa sản phẩm khỏi danh sách ---
     const updatedProducts = currentCart.filter((p: any) => p.id !== productId);
 
-    // --- Gọi API cập nhật cart (dummyjson PUT) ---
-    const res = await axios.put(
-      `https://dummyjson.com/carts/${userId}`,
-      { products: updatedProducts },
-      { headers: { "Content-Type": "application/json" } }
-    );
-
-    // --- Cập nhật localStorage ---
-    localStorage.setItem(storageKey, JSON.stringify(updatedProducts));
-
-    console.log(
-      "Removed product:",
-      productId,
-      "Updated cart:",
-      updatedProducts
-    );
-
-    return {
-      success: true,
+    // Gọi API mock
+    const res = await axiosInstance.put(`/carts/${userId}`, {
       products: updatedProducts,
-      response: res.data,
-    };
+    });
+
+    localStorage.setItem(storageKey, JSON.stringify(updatedProducts));
+    return { success: true, products: updatedProducts, response: res.data };
   },
 };
 
@@ -143,6 +103,8 @@ export const clearCartQuery = {
   name: "clearCart",
   fn: async (userId: number) => {
     localStorage.removeItem(`cart-${userId}`);
+    // Gọi API mock
+    await axiosInstance.put(`/carts/${userId}`, { products: [] });
     return { success: true };
   },
 };

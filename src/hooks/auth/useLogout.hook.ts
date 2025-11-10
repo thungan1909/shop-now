@@ -18,6 +18,12 @@ const clearPersistToken = () => {
   localStorage.removeItem(AUTH_INFO);
 };
 
+export const logoutUser = () => {
+  clearPersistToken();
+
+  window.location.href = "/login";
+};
+
 export const useLogout = (
   params: UseLogoutParams = {
     redirect: true,
@@ -45,7 +51,6 @@ export const useLogout = (
         queryClient.removeQueries({ queryKey: ["cart", userId] });
       }
 
-      // --- Redirect nếu cần ---
       if (redirect) {
         window.location.href = ROUTES_CONSTANTS.AUTH.LOGIN;
       }

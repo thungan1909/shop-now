@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserInfoMutation } from "../../apis/user.api";
+
 import type { UserDTO } from "../../types/dtos/user.dto";
+import { getUserInfoQuery } from "../../apis/user.api";
 
 // export const useGetCurrentUser = () => {
 //   return useQuery({
@@ -12,8 +13,8 @@ import type { UserDTO } from "../../types/dtos/user.dto";
 
 export const useGetCurrentUser = () => {
   return useQuery<UserDTO>({
-    queryKey: [getUserInfoMutation.name],
-    queryFn: getUserInfoMutation.fn,
+    queryKey: [getUserInfoQuery.name],
+    queryFn: getUserInfoQuery.fn,
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
     gcTime: 1000 * 60 * 10, // Giữ cache thêm 10 phút nữa trước khi bị xóa hẳn
     retry: 1, //  Nếu fail thì chỉ thử lại 1 lần
