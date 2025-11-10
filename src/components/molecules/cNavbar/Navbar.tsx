@@ -1,14 +1,11 @@
-import { FaBars, FaBell, FaCaretDown, FaTimes } from "react-icons/fa";
+import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import logo from "../../../assets/logo.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { ROUTES_CONSTANTS } from "../../../routers/constants";
 import CButton from "../../atoms/CButton/CButton";
-import MoreMenu from "./MoreMenu";
 import { menuItems, primaryMenuItems } from "./constants";
-// import { CSearchbox } from "../../atoms/CSearchbox/CSearchbox";
-import { useGetCurrentUser } from "../../../hooks/user/useGetCurrentUser.hook";
 import { getLinkClassName } from "../../../utils/activeLinkUtils";
 import CUserProfileAvatar from "../CUserProfile/cUserProfile";
 
@@ -20,9 +17,6 @@ const Navbar = ({ isAuth }: NavbarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState<"mobile" | "more" | null>(null);
-  const { data: currentUser } = useGetCurrentUser();
-
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,7 +47,7 @@ const Navbar = ({ isAuth }: NavbarProps) => {
               </Link>
             </li>
           ))}
-          <li className="relative">
+          {/* <li className="relative">
             <button
               onClick={() => setOpenMenu(openMenu === "more" ? null : "more")}
               className="!text-gray-700 flex items-center"
@@ -65,7 +59,7 @@ const Navbar = ({ isAuth }: NavbarProps) => {
               isOpen={openMenu === "more"}
               setMoreMenuOpen={setOpenMenu}
             />
-          </li>
+          </li> */}
         </ul>
 
         <button
@@ -99,13 +93,6 @@ const Navbar = ({ isAuth }: NavbarProps) => {
       </div>
 
       <div className="ml-auto flex items-center space-x-4">
-        {/* <CSearchbox
-          className="hidden md:flex ml-auto"
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder="Search something..."
-        /> */}
-
         {isAuth ? (
           <>
             <div className="hidden md:flex items-center space-x-4">

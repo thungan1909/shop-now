@@ -5,6 +5,8 @@ export interface ProductDTO {
   description: string;
   price: number;
   thumbnail: string;
+  rating?: number;
+  tags?: string[];
 }
 
 export interface ProductListResponseDTO {

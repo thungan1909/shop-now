@@ -3,7 +3,7 @@ import PageNotFound from "../pages/common-pages/PageNotFound";
 import OrderPage from "../pages/order/OrderPage";
 import type { RouteItemConfig } from "../types/route-config";
 import { ROUTES_CONSTANTS } from "./constants";
-import { CartPage, HomePage, LoginPage } from "./lazyLoad";
+import { CartPage, HomePage, LoginPage, ProductListPage } from "./lazyLoad";
 import ProtectedRoute from "./ProtectedRoute";
 
 const simpleRoutes: RouteItemConfig[] = [
@@ -35,6 +35,10 @@ const mainRoutes: RouteItemConfig[] = [
         <OrderPage />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: ROUTES_CONSTANTS.PRODUCT,
+    element: <ProductListPage />,
   },
 ];
 

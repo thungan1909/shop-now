@@ -1,6 +1,4 @@
 import { useEffect, useRef } from "react";
-import { moreMenuItems } from "./constants";
-import { Link } from "react-router-dom";
 
 const MoreMenu = ({
   isOpen,
@@ -31,7 +29,7 @@ const MoreMenu = ({
       ref={menuRef}
       className="absolute top-full mt-2 py-2 min-w-[180px] z-50 shadow-md rounded-lg bg-white"
     >
-      <ul className="flex flex-col text-gray-700">
+      {/* <ul className="flex flex-col text-gray-700">
         {moreMenuItems.map((item) => (
           <li key={item.href}>
             <Link
@@ -43,7 +41,7 @@ const MoreMenu = ({
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };

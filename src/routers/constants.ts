@@ -9,4 +9,5 @@ export const ROUTES_CONSTANTS = {
   HOMEPAGE: "/",
   CART: "/cart",
   ORDER: "/order",
+  PRODUCT: "/products",
 };

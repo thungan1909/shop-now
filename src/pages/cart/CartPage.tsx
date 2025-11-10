@@ -1,11 +1,14 @@
 import React from "react";
-import CButton from "../../components/atoms/CButton/CButton";
+
 import { useCartQuery } from "../../hooks/cart/useCartQuery.hook";
 import { useUpdateCartQuantity } from "../../hooks/cart/useUpdateCartQuantity.hook";
 import { useRemoveCartProduct } from "../../hooks/cart/useRemoveCartProduct.hook";
 import { useAuthentication } from "../../hooks/auth/login.hook";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_CONSTANTS } from "../../routers/constants";
+import { FaTrash } from "react-icons/fa";
+import OrderSummary from "../order/OrderSummary";
+import CartEmpty from "./CartEmpty";
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
@@ -36,98 +39,84 @@ const CartPage: React.FC = () => {
     );
 
   const cartProducts = cartQuery.data || [];
-  const totalAmount = cartProducts.reduce(
-    (sum, p) => sum + p.price * (p.quantity || 1),
-    0
-  );
 
-  if (cartProducts.length === 0)
-    return (
-      <div className="max-w-4xl mx-auto p-6 text-center text-gray-600">
-        <h1 className="text-3xl font-bold mb-4">My Cart</h1>
-        <p>Your cart is empty.</p>
-      </div>
-    );
+  if (cartProducts.length === 0) return <CartEmpty />;
 
   const handleCheckout = () => {
     navigate(ROUTES_CONSTANTS.ORDER);
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">My Cart</h1>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      {/* Breadcrumb */}
+      <div className="text-sm text-gray-500 mb-4">
+        Home <span className="mx-2">›</span> Cart
+      </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Cart Items */}
-        <div className="flex-1 space-y-4">
+      {/* Title */}
+      <h1 className="text-4xl font-extrabold mb-8">YOUR CART</h1>
+
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* LEFT SIDE - CART ITEMS */}
+        <div className="flex-1 space-y-5">
           {cartProducts.map((product) => (
             <div
               key={product.id}
-              className="flex items-center gap-4 border rounded-lg p-4 shadow hover:shadow-lg transition"
+              className="flex items-center justify-between border rounded-2xl p-4 shadow-sm hover:shadow-md transition bg-white"
             >
-              <img
-                src={product.thumbnail}
-                alt={product.title}
-                className="w-24 h-24 object-cover rounded"
-              />
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg">{product.title}</h3>
-                <p className="text-gray-500">${product.price}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <CButton
-                    onClick={() =>
-                      updateQuantity({
-                        productId: product.id,
-                        quantity: (product.quantity || 1) - 1,
-                      })
-                    }
-                    disabled={(product.quantity || 1) <= 1}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded"
-                  >
-                    -
-                  </CButton>
-                  <span className="px-2">{product.quantity || 1}</span>
-                  <CButton
-                    onClick={() =>
-                      updateQuantity({
-                        productId: product.id,
-                        quantity: (product.quantity || 1) + 1,
-                      })
-                    }
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded"
-                  >
-                    +
-                  </CButton>
-                  <CButton
-                    onClick={() => removeProduct(product.id)}
-                    className="ml-auto bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                  >
-                    Remove
-                  </CButton>
+              <div className="flex items-center gap-4">
+                <img
+                  src={product.thumbnail}
+                  alt={product.title}
+                  className="w-20 h-20 rounded-lg object-cover"
+                />
+                <div>
+                  <h3 className="font-semibold text-lg">{product.title}</h3>
+                  <p className="text-sm text-gray-500">Size: Large</p>
+                  <p className="text-sm text-gray-500">Color: White</p>
+                  <p className="font-semibold mt-2">${product.price}</p>
                 </div>
+              </div>
+
+              {/* Quantity & Remove */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() =>
+                    updateQuantity({
+                      productId: product.id,
+                      quantity: (product.quantity || 1) - 1,
+                    })
+                  }
+                  disabled={(product.quantity || 1) <= 1}
+                  className="bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 text-lg font-semibold"
+                >
+                  −
+                </button>
+                <span className="w-6 text-center">{product.quantity || 1}</span>
+                <button
+                  onClick={() =>
+                    updateQuantity({
+                      productId: product.id,
+                      quantity: (product.quantity || 1) + 1,
+                    })
+                  }
+                  className="bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 text-lg font-semibold"
+                >
+                  +
+                </button>
+
+                <button
+                  onClick={() => removeProduct(product.id)}
+                  className="ml-4 text-red-500 hover:text-red-600"
+                >
+                  <FaTrash size={20} />
+                </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Order Summary */}
-        <div className="w-full md:w-96 border rounded-lg p-4 shadow bg-white flex flex-col gap-4 sticky top-6 h-fit">
-          <h2 className="text-xl font-semibold">Order Summary</h2>
-          <div className="flex justify-between">
-            <span>Subtotal:</span>
-            <span>${totalAmount.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between font-bold">
-            <span>Total:</span>
-            <span>${totalAmount.toFixed(2)}</span>
-          </div>
-          <CButton
-            onClick={handleCheckout}
-            className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg"
-          >
-            Proceed to Checkout
-          </CButton>
-        </div>
+        <OrderSummary cartProducts={cartProducts} onNext={handleCheckout} />
       </div>
     </div>
   );

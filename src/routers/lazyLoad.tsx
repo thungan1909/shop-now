@@ -25,3 +25,10 @@ export const CartPage = withDynamicImport(
     loading: true,
   }
 );
+
+export const ProductListPage = withDynamicImport(
+  () => import("../pages/product/ProductList"),
+  {
+    loading: true,
+  }
+);

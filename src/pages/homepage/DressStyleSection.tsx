@@ -1,5 +1,5 @@
 const styles = [
-  { label: "Casual", img: "/images/style-casual.jpg" },
+  { label: "Product", img: "/images/style-Product.jpg" },
   { label: "Formal", img: "/images/style-formal.jpg" },
   { label: "Party", img: "/images/style-party.jpg" },
   { label: "Gym", img: "/images/style-gym.jpg" },

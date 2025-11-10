@@ -16,7 +16,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const { cartButtonRef } = useCartButton();
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50 mt-24">
       <Navbar isAuth={isAuth} />
       <div>{children}</div>
 

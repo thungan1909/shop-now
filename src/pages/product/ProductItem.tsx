@@ -1,11 +1,15 @@
 import { useAnimation, motion } from "framer-motion";
-import CButton from "../../components/atoms/CButton/CButton";
 import { useAuthentication } from "../../hooks/auth/login.hook";
 import { useAddToCart } from "../../hooks/cart/useAddToCart.hook";
 import { useQueryClient } from "@tanstack/react-query";
 import { notify } from "../../utils/notifyUtils";
 import type { ProductDTO } from "../../types/dtos/product.dto";
 import { useCartButton } from "../../layout/CartButtonProvider";
+import { FaShoppingCart } from "react-icons/fa";
+
+interface ProductProps {
+  product: ProductDTO;
+}
 
 interface ProductProps {
   product: ProductDTO;
@@ -84,22 +88,30 @@ const ProductItem = ({ product }: ProductProps) => {
   };
 
   return (
-    <div className="border rounded-lg p-3 shadow hover:shadow-md transition">
+    <div className="relative border rounded-xl p-3 shadow hover:shadow-lg transition bg-white">
+      {/* Add to Cart Icon Button */}
+      <button
+        onClick={addCartOnClick}
+        className="absolute top-3 right-3 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow"
+      >
+        <FaShoppingCart size={18} />
+      </button>
+
       <motion.img
         id={`product-img-${product.id}`}
         src={product.thumbnail}
         alt={product.title}
-        className="w-full h-32 object-cover rounded mb-2"
+        className="w-full h-40 object-cover rounded-lg mb-3"
         animate={controls}
       />
-      <h3 className="font-semibold text-lg">{product.title}</h3>
-      <p className="text-gray-500">${product.price}</p>
-      <CButton
-        onClick={addCartOnClick}
-        className="mt-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-      >
-        Add to Cart
-      </CButton>
+
+      <h3 className="font-semibold text-base truncate">{product.title}</h3>
+      <div className="flex items-center justify-between mt-1">
+        <p className="text-gray-600 font-medium">${product.price}</p>
+        <span className="text-yellow-500 text-sm">
+          ★ {product.rating || "4.5"}
+        </span>
+      </div>
     </div>
   );
 };

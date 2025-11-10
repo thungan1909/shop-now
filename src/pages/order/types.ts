@@ -5,3 +5,15 @@ export interface CheckoutFormProps {
   onSubmitForm: (data: TShippingSchema) => void;
   formInstance: UseFormReturn<TShippingSchema>;
 }
+
+interface CartProduct {
+  id: number;
+  title: string;
+  price: number;
+  quantity?: number;
+}
+
+export interface OrderSummaryProps {
+  cartProducts: CartProduct[];
+  onNext?: () => void;
+}

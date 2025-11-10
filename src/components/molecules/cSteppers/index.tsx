@@ -46,7 +46,7 @@ const CSteppers = forwardRef(
     });
 
     return (
-      <Stepper activeStep={currentStep} sx={{ width: "100%" }}>
+      <Stepper activeStep={currentStep} sx={{ width: "100%" }} className="mb-8">
         {stepsList.map((_, idx) => {
           const isCompleted = completed[idx] && currentStep > idx;
 
