@@ -20,12 +20,19 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onPaymentSubmit }) => {
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { isValid },
   } = useForm<TPaymentSchema>({
     resolver: zodResolver(PaymentSchema),
     defaultValues: paymentDefaultValue,
     mode: "onChange",
   });
+
+  const handleCardNumberChange = (value: string) => {
+    const cleaned = value.replace(/\D/g, "");
+    const formatted = cleaned.match(/.{1,4}/g)?.join("-") ?? "";
+    setValue("cardNumber", formatted, { shouldValidate: true });
+  };
 
   const method = watch("method");
 
@@ -62,6 +69,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onPaymentSubmit }) => {
                   placeholder="1234-5678-9012-3456"
                   className="w-full"
                   required
+                  onChange={(e) => handleCardNumberChange(e.target.value)}
                 />
                 {fieldState.error && (
                   <Typography color="error" variant="caption" className="mt-1">

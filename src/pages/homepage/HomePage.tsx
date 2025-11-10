@@ -1,4 +1,3 @@
-import DressStyleSection from "./DressStyleSection";
 import HeroSection from "./HeroSection";
 import NewsletterSection from "./NewsletterSection";
 import ProductSection from "./ProductSection";
@@ -10,7 +9,6 @@ const HomePage = () => {
       <HeroSection />
       <ProductSection title="New Arrivals" type="new" />
       <ProductSection title="Top Selling" type="top" />
-      <DressStyleSection />
       <TestimonialsSection />
       <NewsletterSection />
     </div>
