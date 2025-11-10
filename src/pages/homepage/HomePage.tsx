@@ -1,5 +1,4 @@
 import HeroSection from "./HeroSection";
-import NewsletterSection from "./NewsletterSection";
 import ProductSection from "./ProductSection";
 import TestimonialsSection from "./TestimonialsSection";
 
@@ -10,7 +9,7 @@ const HomePage = () => {
       <ProductSection title="New Arrivals" type="new" />
       <ProductSection title="Top Selling" type="top" />
       <TestimonialsSection />
-      <NewsletterSection />
+      {/* <NewsletterSection /> */}
     </div>
   );
 };

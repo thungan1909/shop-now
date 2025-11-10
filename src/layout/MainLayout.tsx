@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthentication } from "../hooks/auth/login.hook";
 import Navbar from "../components/molecules/cNavbar/Navbar";
 import CButton from "../components/atoms/CButton/CButton";
@@ -11,6 +11,8 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const location = useLocation();
+
   const { isAuth } = useAuthentication();
   const navigate = useNavigate();
   const { cartButtonRef } = useCartButton();
@@ -21,13 +23,17 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <div>{children}</div>
 
       <div className="fixed bottom-12 right-12 flex flex-col items-end gap-3">
-        <CButton
-          ref={cartButtonRef}
-          className="!w-16 !h-16 !rounded-full shadow-xl transition-all"
-          onClick={() => navigate(ROUTES_CONSTANTS.CART, { replace: true })}
-        >
-          <FaShoppingCart size={28} />
-        </CButton>
+        {location.pathname !== ROUTES_CONSTANTS.CART && (
+          <div className="fixed bottom-12 right-12 flex flex-col items-end gap-3">
+            <CButton
+              ref={cartButtonRef}
+              className="!w-16 !h-16 !rounded-full shadow-xl transition-all"
+              onClick={() => navigate(ROUTES_CONSTANTS.CART, { replace: true })}
+            >
+              <FaShoppingCart size={28} />
+            </CButton>
+          </div>
+        )}
       </div>
     </div>
   );

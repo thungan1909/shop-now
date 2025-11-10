@@ -83,11 +83,11 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ### **7. Bonus / Optional**
 
-| Feature                        | Status      |
-| ------------------------------ | ----------- |
-| Deployment (Vercel / Netlify)  | ⚙️ Optional |
-| Product detail modal / preview | ⚙️ Optional |
-| Wishlist simulation            | ⚙️ Optional |
+| Feature                        | Status       |
+| ------------------------------ | ------------ |
+| Deployment (Vercel / Netlify)  | ✅ Completed |
+| Product detail modal / preview | ✅ Completed |
+| Responsive                     | ✅ Completed |
 
 ---
 
