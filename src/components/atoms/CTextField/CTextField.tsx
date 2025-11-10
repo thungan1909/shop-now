@@ -18,7 +18,7 @@ const CTextField = forwardRef<HTMLInputElement | null, ITextField>(
       onKeyDown,
       startIcon,
       sx = {},
-      required = false, // ✅ new prop
+      required = false,
       ...props
     },
     ref
@@ -36,7 +36,8 @@ const CTextField = forwardRef<HTMLInputElement | null, ITextField>(
         ref={ref}
         label={label}
         placeholder={placeholder}
-        type={isPasswordField && !showPassword ? "password" : type}
+        // type={isPasswordField && !showPassword ? "password" : type}
+        type={isPasswordField ? (showPassword ? "text" : "password") : type}
         className={className}
         disabled={disabled}
         value={value}

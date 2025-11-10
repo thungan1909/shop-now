@@ -7,10 +7,3 @@ export interface ShippingInfoDTO {
   detailAddress?: string;
   deliveryNote?: string;
 }
-
-export interface PaymentInfoDTO {
-  method: "card" | "paypal";
-  cardNumber?: string;
-  expiryDate?: string;
-  cvv?: string;
-}

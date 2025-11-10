@@ -9,16 +9,13 @@ import {
 import CTextField from "../../components/atoms/CTextField/CTextField";
 import CButton from "../../components/atoms/CButton/CButton";
 import { Typography } from "@mui/material";
+import { paymentDefaultValue } from "./const";
 
 interface PaymentFormProps {
   onPaymentSubmit: (data: TPaymentSchema) => void;
-  defaultValues?: TPaymentSchema;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({
-  onPaymentSubmit,
-  defaultValues,
-}) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ onPaymentSubmit }) => {
   const {
     handleSubmit,
     control,
@@ -26,12 +23,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
     formState: { isValid },
   } = useForm<TPaymentSchema>({
     resolver: zodResolver(PaymentSchema),
-    defaultValues: defaultValues || {
-      method: "card",
-      cardNumber: "",
-      expiryDate: "",
-      cvv: "",
-    },
+    defaultValues: paymentDefaultValue,
     mode: "onChange",
   });
 

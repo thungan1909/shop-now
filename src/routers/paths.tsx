@@ -1,3 +1,4 @@
+import FeatureComingSoon from "../pages/common-pages/FeatureComingSoon";
 import PageNotFound from "../pages/common-pages/PageNotFound";
 import OrderPage from "../pages/order/OrderPage";
 import type { RouteItemConfig } from "../types/route-config";
@@ -42,6 +43,18 @@ const authenRoutes: RouteItemConfig[] = [
     path: ROUTES_CONSTANTS.AUTH.LOGIN,
     element: <LoginPage />,
     // showWithPermission: true,
+  },
+  {
+    path: ROUTES_CONSTANTS.AUTH.REGISTER,
+    element: <FeatureComingSoon />,
+  },
+  {
+    path: ROUTES_CONSTANTS.AUTH.RESET_PASSWORD,
+    element: <FeatureComingSoon />,
+  },
+  {
+    path: ROUTES_CONSTANTS.AUTH.VERIFY_ACCOUNT,
+    element: <FeatureComingSoon />,
   },
 ];
 

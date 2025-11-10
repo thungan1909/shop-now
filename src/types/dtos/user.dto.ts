@@ -1,43 +1,11 @@
-// export interface CoordinatesDTO {
-//   lat: number;
-//   lng: number;
-// }
-
-// export interface AddressDTO {
-//   address: string;
-//   city: string;
-//   state: string;
-//   stateCode: string;
-//   postalCode: string;
-//   coordinates: CoordinatesDTO;
-//   country: string;
-// }
-
-// export interface HairDTO {
-//   color: string;
-//   type: string;
-// }
-
-// export interface BankDTO {
-//   cardExpire: string;
-//   cardNumber: string;
-//   cardType: string;
-//   currency: string;
-//   iban: string;
-// }
-
-// export interface CompanyDTO {
-//   department: string;
-//   name: string;
-//   title: string;
-//   address: AddressDTO;
-// }
-
-// export interface CryptoDTO {
-//   coin: string;
-//   wallet: string;
-//   network: string;
-// }
+export interface AddressDTO {
+  address: string;
+  city: string;
+  state: string;
+  stateCode: string;
+  postalCode: string;
+  country: string;
+}
 
 export interface UserDTO {
   id: number;
@@ -56,16 +24,12 @@ export interface UserDTO {
   height: number;
   weight: number;
   eyeColor: string;
-  //   hair: HairDTO;
   ip: string;
-  //   address: AddressDTO;
+  address: AddressDTO;
   macAddress: string;
   university: string;
-  //   bank: BankDTO;
-  //   company: CompanyDTO;
   ein: string;
   ssn: string;
   userAgent: string;
-  //   crypto: CryptoDTO;
   role: string;
 }

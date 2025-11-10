@@ -1,3 +1,4 @@
+import type { TPaymentSchema } from "../../validation/payment.schema";
 import type { TShippingSchema } from "../../validation/shipping.schema";
 
 export const shippingDefauftValue: TShippingSchema = {
@@ -9,6 +10,7 @@ export const shippingDefauftValue: TShippingSchema = {
   detailAddress: "",
   deliveryNote: "",
 };
+
 export const EShippingStep = {
   ViewOrder: 0,
   InputShippingInfo: 1,
@@ -18,3 +20,10 @@ export const EShippingStep = {
 
 export type EShippingStepType =
   (typeof EShippingStep)[keyof typeof EShippingStep];
+
+export const paymentDefaultValue: TPaymentSchema = {
+  method: "card",
+  cardNumber: "",
+  expiryDate: "",
+  cvv: "",
+};

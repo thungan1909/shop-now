@@ -23,10 +23,14 @@ import type { TPaymentSchema } from "../../validation/payment.schema";
 import { useClearCart } from "../../hooks/cart/useClearCart.hook";
 import { useUpdateUserShipping } from "../../hooks/shipping/useUpdateUserShipping";
 import type { ShippingInfoDTO } from "../../types/dtos/shipping.dto";
+import OrderSuccessful from "./OrderSuccessful";
+import { useNavigate } from "react-router-dom";
+import { ROUTES_CONSTANTS } from "../../routers/constants";
 const resolver = zodResolver(ShippingSchema);
 
 const OrderPage: React.FC = () => {
   const CStepperRef = useRef<ISteppersRef>(null);
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<EShippingStepType>(
     EShippingStep.ViewOrder
   );
@@ -120,10 +124,9 @@ const OrderPage: React.FC = () => {
       )}
 
       {currentStep === EShippingStep.OrderSuccessful && orderCompleted && (
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Thank you for your order!</h1>
-          <p>Your order has been placed successfully.</p>
-        </div>
+        <OrderSuccessful
+          onContinueShopping={() => navigate(ROUTES_CONSTANTS.HOMEPAGE)}
+        />
       )}
     </div>
   );
