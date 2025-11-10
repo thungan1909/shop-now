@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppRoutes from "./routers/AppRoutes";
 import { ToastContainer } from "react-toastify";
-import { CartButtonProvider } from "./layout/CartButtonProvider";
+import { CartButtonProvider } from "./provider/CartButtonContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {

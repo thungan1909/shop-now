@@ -6,23 +6,22 @@ import type { AuthenticationInfoType } from "../../types/auth";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
 import { AUTH_QUERY_KEY } from "../../constants/queryKey";
 import { axiosInstance } from "../../apis/axiosInstance";
-
+interface JWTPayload {
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  image: string;
+  iat: number;
+  exp: number;
+}
 export const useLogin = () => {
   const queryClient = useQueryClient();
 
   return useMutation<LoginResponse, Error, LoginDTO>({
     mutationFn: async (data: LoginDTO) => {
-      // const res = await fetch("https://dummyjson.com/auth/login", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     username: data.username,
-      //     password: data.password,
-      //     expiresInMins: 30,
-      //   }),
-      //   // credentials: "include",
-      // });
-
       const res = await axiosInstance.post("/auth/login", {
         username: data.username,
         password: data.password,
@@ -48,7 +47,7 @@ export const useLogin = () => {
         localStorage.setItem(ACCESS_TOKEN, accessToken);
         localStorage.setItem(REFRESH_TOKEN, refreshToken);
 
-        const decoded: any = jwtDecode(accessToken);
+        const decoded: JWTPayload = jwtDecode(accessToken);
         console.log(decoded);
 
         //         {
@@ -81,7 +80,7 @@ export const useLogin = () => {
   });
 };
 
-const _useAuthenticationCache = () => {
+const useAuthenticationCache = () => {
   const queryClient = useQueryClient();
 
   return useQuery<AuthenticationInfoType>({
@@ -106,6 +105,6 @@ const _useAuthenticationCache = () => {
 };
 
 export const useAuthentication = (): AuthenticationInfoType => {
-  const { data } = _useAuthenticationCache();
+  const { data } = useAuthenticationCache();
   return data || ({} as AuthenticationInfoType);
 };

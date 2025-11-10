@@ -45,3 +45,21 @@ export interface ProductListResponseDTO {
   skip: number;
   limit: number;
 }
+
+export interface AddToCartRequest {
+  userId: number;
+  productId: number;
+  quantity: number;
+}
+
+export interface CartProduct {
+  id: number;
+  quantity: number;
+  thumbnail: string;
+  title: string;
+  price: number;
+}
+
+export interface AddToCartResponse {
+  products: CartProduct[];
+}

@@ -60,6 +60,7 @@ const OrderPage: React.FC = () => {
 
   const handleOrderComplete = (data: TPaymentSchema) => {
     //TODO: Call API to submit order shipping info +payment
+    console.log(data);
     updateUserShippingInfo({
       userId: userId,
       shipping: formInstance.getValues() as ShippingInfoDTO,

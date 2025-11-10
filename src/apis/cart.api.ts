@@ -1,4 +1,4 @@
-import type { ProductDTO } from "../types/dtos/product.dto";
+import type { CartProduct, ProductDTO } from "../types/dtos/product.dto";
 import type {
   AddToCartRequest,
   AddToCartResponse,
@@ -21,9 +21,12 @@ export const addToCartQuery = {
 
     // Cập nhật localStorage
     const storageKey = `cart-${userId}`;
-    const currentCart = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    const currentCart: CartProduct[] = JSON.parse(
+      localStorage.getItem(storageKey) || "[]"
+    );
 
-    const existingIndex = currentCart.findIndex((p: any) => p.id === productId);
+    const existingIndex = currentCart.findIndex((p) => p.id === productId);
+
     if (existingIndex >= 0) {
       currentCart[existingIndex].quantity += quantity;
     } else {
@@ -65,9 +68,11 @@ export const updateQuantityQuery = {
     quantity: number;
   }) => {
     const storageKey = `cart-${userId}`;
-    const currentCart = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    const currentCart: CartProduct[] = JSON.parse(
+      localStorage.getItem(storageKey) || "[]"
+    );
 
-    const updatedCart = currentCart.map((p: any) =>
+    const updatedCart = currentCart.map((p) =>
       p.id === productId ? { ...p, quantity } : p
     );
 
@@ -84,9 +89,11 @@ export const removeProductQuery = {
   name: "removeProduct",
   fn: async ({ userId, productId }: { userId: number; productId: number }) => {
     const storageKey = `cart-${userId}`;
-    const currentCart = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    const currentCart: CartProduct[] = JSON.parse(
+      localStorage.getItem(storageKey) || "[]"
+    );
 
-    const updatedProducts = currentCart.filter((p: any) => p.id !== productId);
+    const updatedProducts = currentCart.filter((p) => p.id !== productId);
 
     // Gọi API mock
     const res = await axiosInstance.put(`/carts/${userId}`, {

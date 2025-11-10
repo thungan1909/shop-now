@@ -1,8 +1,7 @@
-// Only using react lazy in this file
-// eslint-disable-next-line no-restricted-imports
 import { type FunctionComponent, type JSX, lazy, Suspense } from "react";
 import LoadingPage from "../pages/common-pages/LoadingPage";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const withDynamicImport = <TComponent extends FunctionComponent<any>>(
   callback: () => Promise<{ default: TComponent }>,
   options?: {

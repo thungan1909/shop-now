@@ -11,10 +11,9 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuth } = useAuthentication();
+  const navigate = useNavigate();
 
   if (!isAuth) {
-    const navigate = useNavigate();
-
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-8">
         <Typography variant="h3">Sorry, 403 Authentication Required</Typography>

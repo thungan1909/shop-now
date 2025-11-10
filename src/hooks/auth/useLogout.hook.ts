@@ -9,8 +9,6 @@ interface UseLogoutParams {
   redirect?: boolean;
 }
 
-interface LogOutDTO {} // để tương thích với kiểu mutation
-
 // Hàm helper xoá token và localStorage
 const clearPersistToken = () => {
   localStorage.removeItem(ACCESS_TOKEN);
@@ -33,7 +31,7 @@ export const useLogout = (
   const queryClient = useQueryClient();
   const { userId } = useAuthentication();
 
-  return useMutation<null, LogOutDTO>({
+  return useMutation<null, unknown>({
     mutationFn: async () => {
       // --- Xoá token và thông tin auth ---
       clearPersistToken();

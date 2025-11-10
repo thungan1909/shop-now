@@ -10,7 +10,7 @@ import { getLinkClassName } from "../../../utils/activeLinkUtils";
 import CUserProfileAvatar from "../CUserProfile/cUserProfile";
 
 interface NavbarProps {
-  isAuth: Boolean;
+  isAuth: boolean;
 }
 
 const Navbar = ({ isAuth }: NavbarProps) => {
@@ -47,19 +47,6 @@ const Navbar = ({ isAuth }: NavbarProps) => {
               </Link>
             </li>
           ))}
-          {/* <li className="relative">
-            <button
-              onClick={() => setOpenMenu(openMenu === "more" ? null : "more")}
-              className="!text-gray-700 flex items-center"
-            >
-              More
-              <FaCaretDown />
-            </button>
-            <MoreMenu
-              isOpen={openMenu === "more"}
-              setMoreMenuOpen={setOpenMenu}
-            />
-          </li> */}
         </ul>
 
         <button
@@ -96,21 +83,6 @@ const Navbar = ({ isAuth }: NavbarProps) => {
         {isAuth ? (
           <>
             <div className="hidden md:flex items-center space-x-4">
-              {/* Coins & Streak */}
-              {/* <div className="flex items-center space-x-1 bg-yellow-100 text-yellow-600 px-3 py-2 rounded-full hover:bg-yellow-200 transition cursor-pointer">
-                <FaCoins />
-                <span className="font-semibold">100</span>
-              </div> */}
-              {/* 
-              <div className="flex items-center space-x-1 bg-red-100 text-red-600 px-3 py-2 rounded-full hover:bg-red-200 cursor-pointer">
-                <FaFire />
-                <span className="font-semibold">
-                  {currentUser?.streak || 0}
-                </span>
-              </div> */}
-
-              {/* Icons */}
-              {/* <FaChartBar className="text-gray-500 cursor-pointer hover:text-black transition" /> */}
               <FaBell className="text-gray-500 cursor-pointer hover:text-black transition" />
             </div>
             <CUserProfileAvatar />

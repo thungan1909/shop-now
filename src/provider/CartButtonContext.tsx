@@ -1,9 +1,12 @@
-// CartButtonContext.tsx
-import { createContext, useContext, useRef } from "react";
+import { createContext, useRef } from "react";
+/* eslint-disable react-refresh/only-export-components */
 interface CartButtonContextType {
   cartButtonRef: React.RefObject<HTMLButtonElement | null>;
 }
-const CartButtonContext = createContext<CartButtonContextType | null>(null);
+
+export const CartButtonContext = createContext<CartButtonContextType | null>(
+  null
+);
 
 export const CartButtonProvider = ({
   children,
@@ -17,12 +20,4 @@ export const CartButtonProvider = ({
       {children}
     </CartButtonContext.Provider>
   );
-};
-
-export const useCartButton = () => {
-  const context = useContext(CartButtonContext);
-
-  if (!context)
-    throw new Error("useCartButton must be used within CartButtonProvider");
-  return context;
 };
