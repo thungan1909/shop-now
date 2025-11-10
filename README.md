@@ -5,6 +5,13 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ---
 
+## 🌐 Links
+
+- **Live Demo:** [https://shop-now-dtngan.vercel.app/login](https://shop-now-dtngan.vercel.app/login)
+- **GitHub Repository:** [https://github.com/thungan1909/shop-now](https://github.com/thungan1909/shop-now)
+
+---
+
 ## 🧠 Technical Stack
 
 - React + TypeScript
@@ -121,12 +128,12 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/ecommerce-app.git
-cd ecommerce-app
+git clone https://github.com/thungan1909/shop-now.git
+cd shop-now
 
 # Install dependencies
 npm install
 
 # Start dev server
-npm run devs
+npm run dev
 ```
