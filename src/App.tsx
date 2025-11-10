@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppRoutes from "./routers/AppRoutes";
 import { ToastContainer } from "react-toastify";
+import { CartButtonProvider } from "./layout/CartButtonProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,8 +18,10 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppRoutes />
-      <ToastContainer />
+      <CartButtonProvider>
+        <AppRoutes />
+        <ToastContainer />
+      </CartButtonProvider>
     </QueryClientProvider>
   );
 };
