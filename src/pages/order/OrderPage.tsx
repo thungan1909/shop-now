@@ -26,6 +26,7 @@ import type { ShippingInfoDTO } from "../../types/dtos/shipping.dto";
 import OrderSuccessful from "./OrderSuccessful";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_CONSTANTS } from "../../routers/constants";
+import CartEmpty from "../cart/CartEmpty";
 const resolver = zodResolver(ShippingSchema);
 
 const OrderPage: React.FC = () => {
@@ -69,8 +70,7 @@ const OrderPage: React.FC = () => {
   };
 
   if (!isAuth) return <div>Please login to view your order.</div>;
-  if (!cartQuery.data || cartQuery.data.length === 0)
-    return <div>Your cart is empty.</div>;
+  if (!cartQuery.data || cartQuery.data.length === 0) return <CartEmpty />;
 
   return (
     <div className="max-w-4xl mx-auto p-6">

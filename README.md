@@ -1,73 +1,149 @@
-# React + TypeScript + Vite
+# 🛍️ E-Commerce Application (Assignment)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React + TypeScript e-commerce web app built with DummyJSON API.  
+Users can log in, browse products, add to cart, and complete a simulated checkout.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧠 Technical Stack
 
-## React Compiler
+- React + TypeScript
+- Tailwind CSS + Framer Motion + Shadcn/UI
+- React Hook Form + Zod
+- React Router DOM
+- DummyJSON API ([https://dummyjson.com](https://dummyjson.com))
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✅ Feature Checklist (Based on Requirements)
 
-## Expanding the ESLint configuration
+### **1. Login**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Feature                                        | Status |
+| ---------------------------------------------- | ------ |
+| Implement user authentication                  | ✅     |
+| JWT token management                           | ✅     |
+| Redirect to product page after login           | ✅     |
+| Protect cart page for authenticated users only | ✅     |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### **2. Product List**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+| Feature                       | Status |
+| ----------------------------- | ------ |
+| Display product list          | ✅     |
+| Infinite scroll (20 per load) | ✅     |
+| Search products by name       | ✅     |
+| “Add to Cart” button          | ✅     |
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### **3. Shopping Cart**
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Feature                             | Status |
+| ----------------------------------- | ------ |
+| Add products to cart                | ✅     |
+| View cart per logged-in user        | ✅     |
+| Adjust quantity                     | ✅     |
+| Remove items                        | ✅     |
+| Calculate total amount              | ✅     |
+| Empty cart illustration & modern UI | ✅     |
+
+---
+
+### **4. Checkout Form (Simulation)**
+
+| Feature                                                  | Status             |
+| -------------------------------------------------------- | ------------------ | --- |
+| Shipping information (name, phone, email, address, note) | ✅                 |
+| Payment method selection (Card / PayPal)                 | ✅                 |
+| Card details input (number, expiry, CVV)                 | ✅                 |
+| Auto-format card number (`1234-5678-9012-3456`)          | ✅                 |
+| Expiry date regex validation (`/^(0[1-9]                 | 1[0-2])\/\d{2}$/`) | ✅  |
+| CVV max length 3                                         | ✅                 |
+| Real-time field validation with Zod                      | ✅                 |
+| Order summary display                                    | ✅                 |
+| Simulated order completion flow                          | ✅                 |
+| PUT /users/{id} to save address                          | ✅                 |
+| DELETE /carts/{id} to clear cart                         | ✅                 |
+| Order confirmation screen (animated)                     | ✅                 |
+
+---
+
+### **5. UI / UX**
+
+| Feature                                           | Status |
+| ------------------------------------------------- | ------ |
+| Tailwind CSS styling                              | ✅     |
+| Modern design with rounded corners, shadows       | ✅     |
+| Responsive layout                                 | ✅     |
+| Framer Motion animations                          | ✅     |
+| Empty & success state illustrations               | ✅     |
+| Consistent button design (rounded, hover effects) | ✅     |
+
+---
+
+### **6. Error & Loading Handling**
+
+| Feature                                     | Status |
+| ------------------------------------------- | ------ |
+| Loading states for API requests             | ✅     |
+| Error fallback messages                     | ✅     |
+| Graceful handling for DummyJSON limitations | ✅     |
+
+---
+
+### **7. Code Quality**
+
+| Feature                       | Status |
+| ----------------------------- | ------ |
+| TypeScript with strong typing | ✅     |
+| Zod schema validation         | ✅     |
+| Modular folder structure      | ✅     |
+| Reusable components           | ✅     |
+| React Hook Form integration   | ✅     |
+
+---
+
+### **8. Bonus / Optional**
+
+| Feature                        | Status      |
+| ------------------------------ | ----------- |
+| Deployment (Vercel / Netlify)  | ⚙️ Optional |
+| Product detail modal / preview | ⚙️ Optional |
+| Wishlist simulation            | ⚙️ Optional |
+
+---
+
+---
+
+## 🧩 Folder Structure
+
+src/
+├── assets/
+├── components/
+│ ├── atoms/
+│ ├── molecules/
+│ └── organisms/
+├── hooks/
+├── pages/
+├── routers/
+├── schemas/
+├── services/
+├── types/
+└── App.tsx
+
+---
+
+## ⚙️ How to Run
+
+```bash
+# Clone repository
+git clone https://github.com/your-username/ecommerce-app.git
+cd ecommerce-app
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run devs
 ```
