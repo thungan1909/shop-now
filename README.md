@@ -28,71 +28,48 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ### **2. Product List**
 
-| Feature                       | Status |
-| ----------------------------- | ------ |
-| Display product list          | ✅     |
-| Infinite scroll (20 per load) | ✅     |
-| Search products by name       | ✅     |
-| “Add to Cart” button          | ✅     |
+| Feature                               | Status |
+| ------------------------------------- | ------ |
+| Display product list                  | ✅     |
+| Infinite scroll (20 per load)         | ✅     |
+| Search products by name               | ✅     |
+| "Add to Cart" button for each product | ✅     |
 
 ---
 
 ### **3. Shopping Cart**
 
-| Feature                             | Status |
-| ----------------------------------- | ------ |
-| Add products to cart                | ✅     |
-| View cart per logged-in user        | ✅     |
-| Adjust quantity                     | ✅     |
-| Remove items                        | ✅     |
-| Calculate total amount              | ✅     |
-| Empty cart illustration & modern UI | ✅     |
+| Feature                      | Status |
+| ---------------------------- | ------ |
+| Add products to cart         | ✅     |
+| View cart per logged-in user | ✅     |
+| Quantity adjustment          | ✅     |
+| Remove items                 | ✅     |
+| Calculate total amount       | ✅     |
 
 ---
 
 ### **4. Checkout Form (Simulation)**
 
-| Feature                                                  | Status             |
-| -------------------------------------------------------- | ------------------ | --- |
-| Shipping information (name, phone, email, address, note) | ✅                 |
-| Payment method selection (Card / PayPal)                 | ✅                 |
-| Card details input (number, expiry, CVV)                 | ✅                 |
-| Auto-format card number (`1234-5678-9012-3456`)          | ✅                 |
-| Expiry date regex validation (`/^(0[1-9]                 | 1[0-2])\/\d{2}$/`) | ✅  |
-| CVV max length 3                                         | ✅                 |
-| Real-time field validation with Zod                      | ✅                 |
-| Order summary display                                    | ✅                 |
-| Simulated order completion flow                          | ✅                 |
-| PUT /users/{id} to save address                          | ✅                 |
-| DELETE /carts/{id} to clear cart                         | ✅                 |
-| Order confirmation screen (animated)                     | ✅                 |
+| Feature                                                                                     | Status |
+| ------------------------------------------------------------------------------------------- | ------ |
+| Shipping information (Recipient, Address,Delivery notes )                                   | ✅     |
+| Payment Information (Payment method, Card details, Card number)                             | ✅     |
+| Form Validation with Zod                                                                    | ✅     |
+| Order Completion Simulation (Display order summary, Confirm final amount, order completion) | ✅     |
 
 ---
 
-### **5. UI / UX**
+### **5. Additional Requirements: Error & Loading Handling**
 
-| Feature                                           | Status |
-| ------------------------------------------------- | ------ |
-| Tailwind CSS styling                              | ✅     |
-| Modern design with rounded corners, shadows       | ✅     |
-| Responsive layout                                 | ✅     |
-| Framer Motion animations                          | ✅     |
-| Empty & success state illustrations               | ✅     |
-| Consistent button design (rounded, hover effects) | ✅     |
+| Feature                         | Status |
+| ------------------------------- | ------ |
+| Loading states for API requests | ✅     |
+|                                 | ✅     |
 
 ---
 
-### **6. Error & Loading Handling**
-
-| Feature                                     | Status |
-| ------------------------------------------- | ------ |
-| Loading states for API requests             | ✅     |
-| Error fallback messages                     | ✅     |
-| Graceful handling for DummyJSON limitations | ✅     |
-
----
-
-### **7. Code Quality**
+### **6. Code Quality**
 
 | Feature                       | Status |
 | ----------------------------- | ------ |
@@ -104,7 +81,7 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 
 ---
 
-### **8. Bonus / Optional**
+### **7. Bonus / Optional**
 
 | Feature                        | Status      |
 | ------------------------------ | ----------- |
@@ -119,17 +96,21 @@ Users can log in, browse products, add to cart, and complete a simulated checkou
 ## 🧩 Folder Structure
 
 src/
+├── apis/
 ├── assets/
 ├── components/
 │ ├── atoms/
 │ ├── molecules/
-│ └── organisms/
+├── constants/
 ├── hooks/
+├── layout/
 ├── pages/
 ├── routers/
-├── schemas/
-├── services/
 ├── types/
+│ ├── auth/
+│ ├── dtos/
+├── utils/
+├── validation/
 └── App.tsx
 
 ---
