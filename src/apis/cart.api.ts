@@ -102,8 +102,12 @@ export const removeProductQuery = {
 export const clearCartQuery = {
   name: "clearCart",
   fn: async ({ userId }: { userId: number }) => {
+    // Clear local storage
     localStorage.removeItem(`cart-${userId}`);
-    await axiosInstance.put(`/carts/${userId}`, { products: [] });
-    return { success: true };
+
+    // Delete cart on server
+    const response = await axiosInstance.delete(`/carts/${userId}`);
+
+    return response.data; // e.g., { success: true }
   },
 };

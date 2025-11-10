@@ -21,6 +21,8 @@ import CButton from "../../components/atoms/CButton/CButton";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import type { TPaymentSchema } from "../../validation/payment.schema";
 import { useClearCart } from "../../hooks/cart/useClearCart.hook";
+import { useUpdateUserShipping } from "../../hooks/shipping/useUpdateUserShipping";
+import type { ShippingInfoDTO } from "../../types/dtos/shipping.dto";
 const resolver = zodResolver(ShippingSchema);
 
 const OrderPage: React.FC = () => {
@@ -31,6 +33,7 @@ const OrderPage: React.FC = () => {
   const { isAuth, userId } = useAuthentication();
   const { cartQuery } = useCartQuery(userId);
   const { mutate: clearCart } = useClearCart(userId);
+  const { mutate: updateUserShippingInfo } = useUpdateUserShipping();
   const [orderCompleted, setOrderCompleted] = useState(false);
   const formInstance = useForm<TShippingSchema>({
     resolver,
@@ -51,8 +54,11 @@ const OrderPage: React.FC = () => {
   };
 
   const handleOrderComplete = (data: TPaymentSchema) => {
-    console.log(data);
     //TODO: Call API to submit order shipping info +payment
+    updateUserShippingInfo({
+      userId: userId,
+      shipping: formInstance.getValues() as ShippingInfoDTO,
+    });
     clearCart();
     setOrderCompleted(true);
     setCurrentStep(EShippingStep.OrderSuccessful);

@@ -3,7 +3,6 @@ import { notify } from "../../utils/notifyUtils";
 import { updateUserShippingQuery } from "../../apis/shipping.api";
 import type { ShippingInfoDTO } from "../../types/dtos/shipping.dto";
 
-// --- Hook: update shipping info ---
 export const useUpdateUserShipping = () => {
   return useMutation({
     mutationFn: (params: { userId: number; shipping: ShippingInfoDTO }) =>
